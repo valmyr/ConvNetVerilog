@@ -1,7 +1,0 @@
-//
-// File created by:  xrun
-// Do not modify this file
-//
-hdl/cnn.sv
-hdl/indexMatrix.sv
-test/tb.sv
