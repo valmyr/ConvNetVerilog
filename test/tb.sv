@@ -4,13 +4,14 @@ logic clock, nreset;
 logic [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
 
-logic [WIDTH_BIT-1:0] outMatrix_IxK ;
+logic [WIDTH_BIT-1:0] convIxKernel ;
 logic [WIDTH_BIT-1:0] i, j ;
-cnn #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) CNN1 
+conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) CNN1 
 (
     .clock                          ,
     .nreset                         ,
-    .inpMatrixI(inpMatrixIdinKer)         
+    .inpMatrixI(inpMatrixIdinKer)   ,
+    .convIxKernel(convIxKernel)      
 );
 
 indexMatrix #(.SIZE(SIZE-SIZEKer),.WIDTH_BIT(WIDTH_BIT)) sliced(
@@ -20,11 +21,12 @@ indexMatrix #(.SIZE(SIZE-SIZEKer),.WIDTH_BIT(WIDTH_BIT)) sliced(
     .j
 );
 initial begin
-    $readmemb("I.txt",inpMatrixI);
+    $readmemb("simulation/I.txt",inpMatrixI);
     clock =0;
     nreset = 0;
     #1 nreset = 1;
     repeat(40) #1 clock = ~clock;
+    $monitor("%d",convIxKernel);
 end
 always_ff@(posedge clock)begin
     inpMatrixIdinKer[0][0] = inpMatrixI[0+i][0+j];
@@ -36,5 +38,6 @@ always_ff@(posedge clock)begin
     inpMatrixIdinKer[2][0] = inpMatrixI[2+i][0+j];
     inpMatrixIdinKer[2][1] = inpMatrixI[2+i][1+j];
     inpMatrixIdinKer[2][2] = inpMatrixI[2+i][2+j];
+
 end
 endmodule
