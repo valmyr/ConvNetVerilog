@@ -1,5 +1,32 @@
-0 1 1 1 0
-0 0 1 1 1
-0 0 0 1 1 
-0 0 0 1 1
-0 0 1 1 0
+ff ff ff ff 04 04 ff ff ff ff ff ff ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff ff ff ff ff ff 04 
+ff ff ff ff 04 04 04 ff ff ff ff ff ff 04 ff ff ff ff ff ff ff 04 04 ff ff ff ff ff ff ff ff 04 
+ff ff ff ff 04 04 04 04 ff ff ff ff ff 04 ff ff ff ff ff ff ff 04 04 ff ff ff ff ff ff ff ff 04 
+ff ff ff ff 04 04 04 04 04 ff ff ff ff 04 ff ff ff ff ff ff 04 04 04 ff ff ff ff ff ff ff ff 04 
+c0 c0 c0 c0 04 04 04 04 04 04 c0 c0 c0 04 c0 c0 c0 c0 c0 04 04 04 04 04 c0 c0 c0 c0 c0 c0 c0 04 
+42 42 42 42 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 42 42 42 42 04 
+ff ff ff ff 04 04 04 04 04 04 04 04 04 04 ff ff ff ff ff ff 04 04 04 ff ff 04 04 ff ff ff ff 04 
+ff ff ff ff 04 04 04 04 04 04 04 04 ff 04 ff ff ff ff ff ff ff 04 04 ff ff ff 04 04 ff ff ff 04 
+ff ff ff ff 04 04 04 04 04 04 04 ff ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff ff 04 04 ff ff 04 
+ff ff ff ff 04 04 04 04 04 04 04 ff ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff ff ff 04 ff ff 04 
+ff ff ff ff 04 04 04 04 04 04 ff ff ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff ff ff ff 04 ff 04 
+ff ff ff ff 04 04 04 04 04 04 ff ff ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff 04 04 ff 04 04 04 
+ff ff ff ff 04 04 04 04 04 ff ff ff ff 04 ff ff ff 04 04 04 ff ff 04 ff ff ff 04 04 04 ff 04 04 
+ff ff ff 04 04 04 04 04 04 ff ff ff ff 04 ff ff 04 04 04 04 ff ff 04 ff ff ff 04 04 04 ff 04 04 
+c0 c0 c0 04 04 04 04 04 04 c0 c0 c0 c0 04 c0 c0 04 04 04 04 c0 c0 04 04 c0 c0 04 04 04 c0 04 04 
+42 04 04 04 04 04 04 04 04 42 42 42 42 04 42 42 04 04 04 04 42 42 04 04 42 42 42 04 04 42 42 04 
+42 04 04 04 04 04 04 04 04 04 42 42 42 04 42 42 42 04 04 04 42 42 04 04 04 42 42 42 42 42 42 04 
+04 04 04 04 04 04 04 04 04 04 ff ff ff 04 ff ff ff ff ff ff ff ff 04 ff 04 ff ff ff ff ff ff 04 
+ff 04 04 04 04 04 04 04 04 04 04 ff ff 04 ff ff ff ff ff ff ff ff 04 ff 04 04 04 04 04 ff 04 04 
+ff ff 04 04 04 04 ff ff ff 04 04 04 ff 04 ff ff ff ff ff ff ff 04 04 04 04 04 04 04 04 04 ff 04 
+ff ff ff 04 04 04 ff ff ff ff ff 04 04 04 ff ff ff ff ff ff 04 04 04 04 04 04 04 04 04 ff 04 04 
+ff ff 04 04 04 04 ff ff 04 04 04 ff ff 04 04 04 04 04 04 04 04 ff 04 04 04 04 04 04 04 04 04 04 
+ff 04 04 04 04 04 ff ff 04 04 04 ff ff 04 04 04 04 04 ff ff ff ff 04 ff 04 04 04 04 04 04 04 04 
+ff ff ff ff 04 04 ff ff ff ff 04 04 ff 04 ff ff ff ff ff ff ff ff 04 ff ff ff ff ff 04 ff 04 04 
+c0 c0 c0 c0 04 04 c0 c0 c0 c0 c0 c0 04 04 c0 c0 c0 c0 c0 c0 c0 c0 04 c0 c0 c0 04 04 c0 04 04 04 
+c0 c0 c0 c0 04 04 c0 c0 c0 c0 c0 c0 04 04 04 04 04 04 c0 c0 c0 c0 04 04 04 04 04 c0 c0 04 c0 04 
+42 42 42 42 04 04 04 04 42 42 42 42 42 04 04 42 42 42 04 04 04 04 04 04 04 04 42 04 04 42 42 04 
+ff ff ff ff 04 04 ff 04 04 ff ff ff ff 04 ff ff ff ff ff ff 04 ff 04 04 04 ff 04 04 ff ff ff 04 
+ff ff ff ff 04 04 ff ff 04 04 ff ff ff 04 04 04 ff ff ff ff ff ff 04 04 ff 04 04 ff ff ff ff 04 
+ff ff ff ff 04 04 ff ff ff 04 04 04 ff 04 ff 04 04 04 04 04 04 04 04 04 04 04 ff ff ff ff ff 04 
+ff ff ff ff 04 04 ff ff ff ff ff 04 04 04 04 ff ff ff ff ff 04 04 04 04 ff ff ff ff ff ff ff 04 
+ff ff ff ff 04 04 ff ff ff ff ff ff ff 04 04 04 04 04 04 04 04 04 04 ff ff ff ff ff ff ff ff 04 
