@@ -1,0 +1,1 @@
+xrun hdl/*sv test/*sv -gui -access +rw
