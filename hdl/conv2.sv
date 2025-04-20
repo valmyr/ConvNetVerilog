@@ -1,14 +1,14 @@
 module conv2#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
-    input logic                     clock                                                   ,
+    input  logic                      clock                                                   ,
     input logic                     nreset                                                  ,
-    input logic [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]                ,
+    input logic  signed  [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]                ,
     output logic                    done                                                    ,
-    output logic [WIDTH_BIT-1:0]    convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0]
+    output logic  signed  [WIDTH_BIT-1:0]    convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0]
 );
 
 logic ena;
-logic [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
-logic [WIDTH_BIT-1:0] convIxKernel ;
+logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed [WIDTH_BIT-1:0] convIxKernel ;
 logic [WIDTH_BIT-1:0] i, j, next,current;
 
 

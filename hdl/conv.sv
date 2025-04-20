@@ -1,12 +1,12 @@
 module mulp#(parameter SIZE = 3,WIDTH_BIT = 8)(
-    input logic [WIDTH_BIT-1:0] a,b,
-    output logic [WIDTH_BIT-1:0] c
+    input logic  signed  [WIDTH_BIT-1:0] a,b,
+    output logic  signed [WIDTH_BIT-1:0] c
 );
     assign c = a*b;
 endmodule
 module sum#(parameter SIZE = 3,WIDTH_BIT = 8)(
-        input logic [WIDTH_BIT-1:0] a,b,
-        output logic [WIDTH_BIT-1:0] c
+        input logic  signed [WIDTH_BIT-1:0] a,b,
+        output logic  signed [WIDTH_BIT-1:0] c
 );
     assign c = a+b;
 endmodule
@@ -14,10 +14,10 @@ module conv#(parameter SIZE = 3,WIDTH_BIT = 8)(
     input   logic                 clock                               ,
     input   logic                 nreset                              ,
     input   logic ena                                                 ,
-    input   logic [WIDTH_BIT-1:0] inpMatrixI    [SIZE-1:0][SIZE-1:0]  ,
-    output  logic [WIDTH_BIT-1:0] convIxKernel
+    input   logic  signed  [WIDTH_BIT-1:0] inpMatrixI    [SIZE-1:0][SIZE-1:0]  ,
+    output  logic  signed  [WIDTH_BIT-1:0] convIxKernel
 );
-    logic [WIDTH_BIT-1:0] Kernel [SIZE-1:0][SIZE-1:0];
+    logic  signed  [WIDTH_BIT-1:0] Kernel [SIZE-1:0][SIZE-1:0];
     initial $readmemh("simulation/Kernel.txt",Kernel);
     // always_comb convIxKernel = ena ? (inpMatrixI[0][0]*Kernel[0][0]+inpMatrixI[0][1]*Kernel[0][1]+inpMatrixI[0][2]*Kernel[0][2]+
                                     //  inpMatrixI[1][0]*Kernel[1][0]+inpMatrixI[1][1]*Kernel[1][1]+inpMatrixI[1][2]*Kernel[1][2]+
