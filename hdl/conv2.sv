@@ -59,7 +59,7 @@ logic signed [WIDTH_BIT-1:0] k ;
                
              end
              2:begin convIxKernelOut[i][j] <= convIxKernel;
-                $display(convIxKernel);
+
                 ena <= 0;
              end
             endcase
