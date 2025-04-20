@@ -41,7 +41,6 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
             current<= 0;
             done<= 0;
         end else begin
-            done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
             case(current)
              0:begin
                 ena <=0;
@@ -54,13 +53,14 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 inpMatrixIdinKer[2][0] <= inpMatrixI[2+i][0+j];
                 inpMatrixIdinKer[2][1] <= inpMatrixI[2+i][1+j];
                 inpMatrixIdinKer[2][2] <= inpMatrixI[2+i][2+j];
+                done<= 0;
              end
              1:begin 
                 ena <= 1;
-               
+                done<= 0;
              end
              2:begin convIxKernelOut[i][j] <= convIxKernel;
-
+                done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
                 ena <= 0;
              end
             endcase
