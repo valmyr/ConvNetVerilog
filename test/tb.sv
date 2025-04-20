@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZE =100, SIZEKer = 3, WIDTH_BIT = 16;
 logic clock, nreset,ena,done;
 logic [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
