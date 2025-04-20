@@ -3,6 +3,7 @@
 
 
 Links úteis:
+[CNN EXPAINER](https://poloclub.github.io/cnn-explainer/#article-convolution).
 
 [Deep CNN-DESIGN](https://www.baeldung.com/cs/deep-cnn-design)
 
