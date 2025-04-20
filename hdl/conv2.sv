@@ -10,7 +10,7 @@ logic ena;
 logic [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
 logic [WIDTH_BIT-1:0] convIxKernel ;
 logic [WIDTH_BIT-1:0] i, j, next,current;
-logic signed [WIDTH_BIT-1:0] k ;
+
 
     conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN1(
         .clock(clock)                          ,
@@ -39,8 +39,9 @@ logic signed [WIDTH_BIT-1:0] k ;
             inpMatrixIdinKer[2][2] <= inpMatrixI[2+i][2+j];
             ena= 0;
             current<= 0;
+            done<= 0;
         end else begin
-            // $display("%d,%d,%d",convIxKernel,i,j);
+            done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
             case(current)
              0:begin
                 ena <=0;
