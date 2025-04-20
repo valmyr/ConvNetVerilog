@@ -17,3 +17,6 @@ Links úteis:
 [2D Convolution in Hardware](https://sistenix.com/sobel.html)
 
 
+```{r, child = "simulation/I.txt", results = "asis"}
+```
+{r, child = "simulation/I.txt", results = "asis"}
