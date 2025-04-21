@@ -18,3 +18,7 @@ Links úteis:
 
 
 [Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
+
+
+[![Legenda](images/preprocessamento.jpg)](url para a pagina)]
+[![Legenda](images/posprocessamento.jpg)](url para a pagina)]
