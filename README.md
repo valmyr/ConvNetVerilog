@@ -15,7 +15,7 @@ Links úteis:
 
 
 [2D Convolution in Hardware](https://sistenix.com/sobel.html)
-
+[Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
 
 ```{r, child = "simulation/I.txt", results = "asis"}
 ```
