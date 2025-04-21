@@ -20,5 +20,6 @@ Links úteis:
 [Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
 
 
-[![Legenda](images/preprocessamento.jpg)](url para a pagina)]
-[![Legenda](images/posprocessamento.jpg)](url para a pagina)]
+
+<img title="pre processamento" alt="Alt text" src="images/preprocessamento.jpg">
+<img title="pos processamento" alt="Alt text" src="images/posprocessamento.jpg">
