@@ -18,7 +18,3 @@ Links úteis:
 
 
 [Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
-
-```{r, child = "simulation/I.txt", results = "asis"}
-```
-{r, child = "simulation/I.txt", results = "asis"}
