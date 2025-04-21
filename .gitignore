@@ -1,5 +1,6 @@
 xcelium.d/
 waves.shm/
+python/
 .simvision/
 *.history
 *.log
