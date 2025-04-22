@@ -26,6 +26,22 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
         .inpMatrixI(inpMatrixIdinKer0)          ,
         .convIxKernel(convIxKernel0)            
     );
+    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN2(
+        .clock(clock)                          ,
+        .nreset(nreset)                        ,
+        .inpMatrixI(inpMatrixIdinKer1)          ,
+        .convIxKernel(convIxKernel1)            
+    );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN3(
+        .clock(clock)                          ,
+        .nreset(nreset)                        ,
+        .inpMatrixI(inpMatrixIdinKer2)          ,
+        .convIxKernel(convIxKernel2)            
+    );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN4(
+        .clock(clock)                          ,
+        .nreset(nreset)                        ,
+        .inpMatrixI(inpMatrixIdinKer3)          ,
+        .convIxKernel(convIxKernel3)            
+    );
     indexMatrix #(.SIZE(SIZE/2-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndex(
         .nreset(nreset),
         .clock(clock),
@@ -52,10 +68,10 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 ena <=0;
                 for(integer k=0; k < SIZEKer; k++)
                     for(integer l = 0; l < SIZEKer; l++)begin
-                        inpMatrixIdinKer0[k][l] <= inpMatrixI[k+i+0][l+j+0];
-                        inpMatrixIdinKer1[k][l] <= inpMatrixI[k+i+0][l+j+4];
-                        inpMatrixIdinKer2[k][l] <= inpMatrixI[k+i+4][l+j+0];
-                        inpMatrixIdinKer3[k][l] <= inpMatrixI[k+i+4][l+j+4];
+                        inpMatrixIdinKer0[k][l] <= inpMatrixI[k+i+0     ][l+j+0     ];
+                        inpMatrixIdinKer1[k][l] <= inpMatrixI[k+i+     0][l+j+SIZE/2];
+                        inpMatrixIdinKer2[k][l] <= inpMatrixI[k+i+SIZE/2][l+j+0     ];
+                        inpMatrixIdinKer3[k][l] <= inpMatrixI[k+i+SIZE/2][l+j+SIZE/2];
                     end
 
                 done<= 0;
@@ -65,11 +81,11 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 done<= 0;
              end
              2:begin 
-                convIxKernelOut[i+0][j+0] <= convIxKernel0 >= 0  ? convIxKernel1/3: 0; //Relu+
-                convIxKernelOut[i+0][j+4] <= convIxKernel1 >= 0  ? convIxKernel2/3: 0; //Relu+
-                convIxKernelOut[i+4][j+0] <= convIxKernel2 >= 0  ? convIxKernel2/3: 0; //Relu+
-                convIxKernelOut[i+4][j+4] <= convIxKernel3 >= 0  ? convIxKernel3/3: 0; //Relu+
-                done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
+                convIxKernelOut[i    + 0][j     +0] <= convIxKernel0 >= 0  ? convIxKernel1/3: 0; //Relu+
+                convIxKernelOut[i     +0][j+SIZE/2] <= convIxKernel1 >= 0  ? convIxKernel2/3: 0; //Relu+
+                convIxKernelOut[i+SIZE/2][j+     0] <= convIxKernel2 >= 0  ? convIxKernel2/3: 0; //Relu+
+                convIxKernelOut[i+SIZE/2][j+SIZE/2] <= convIxKernel3 >= 0  ? convIxKernel3/3: 0; //Relu+
+                done <= i == SIZE/2-SIZEKer && j == SIZE/2-SIZEKer;
                 ena <= 0;
              end
             endcase
