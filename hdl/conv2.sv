@@ -16,10 +16,9 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
         .clock(clock)                          ,
         .nreset(nreset)                        ,
         .inpMatrixI(inpMatrixIdinKer)          ,
-        .convIxKernel(convIxKernel)            ,
-        .ena(ena)
+        .convIxKernel(convIxKernel)            
     );
-    indexMatrix #(.SIZE(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))sliced(
+    indexMatrix #(.SIZE(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndex(
         .nreset(nreset),
         .clock(clock),
         .i(i),
@@ -28,15 +27,10 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
     );
     always_ff@(posedge clock,negedge nreset)begin
         if(!nreset)begin
-            inpMatrixIdinKer[0][0] <= inpMatrixI[0+i][0+j];
-            inpMatrixIdinKer[0][1] <= inpMatrixI[0+i][1+j];
-            inpMatrixIdinKer[0][2] <= inpMatrixI[0+i][2+j];
-            inpMatrixIdinKer[1][0] <= inpMatrixI[1+i][0+j];
-            inpMatrixIdinKer[1][1] <= inpMatrixI[1+i][1+j];
-            inpMatrixIdinKer[1][2] <= inpMatrixI[1+i][2+j];
-            inpMatrixIdinKer[2][0] <= inpMatrixI[2+i][0+j];
-            inpMatrixIdinKer[2][1] <= inpMatrixI[2+i][1+j];
-            inpMatrixIdinKer[2][2] <= inpMatrixI[2+i][2+j];
+            for(integer k=0; k < SIZEKer; k++)
+                for(integer l = 0; l < SIZEKer; l++)
+                    inpMatrixIdinKer[k][l] <= 0;
+
             ena= 0;
             current<= 0;
             done<= 0;
@@ -44,22 +38,18 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
             case(current)
              0:begin
                 ena <=0;
-                inpMatrixIdinKer[0][0] <= inpMatrixI[0+i][0+j];
-                inpMatrixIdinKer[0][1] <= inpMatrixI[0+i][1+j];
-                inpMatrixIdinKer[0][2] <= inpMatrixI[0+i][2+j];
-                inpMatrixIdinKer[1][0] <= inpMatrixI[1+i][0+j];
-                inpMatrixIdinKer[1][1] <= inpMatrixI[1+i][1+j];
-                inpMatrixIdinKer[1][2] <= inpMatrixI[1+i][2+j];
-                inpMatrixIdinKer[2][0] <= inpMatrixI[2+i][0+j];
-                inpMatrixIdinKer[2][1] <= inpMatrixI[2+i][1+j];
-                inpMatrixIdinKer[2][2] <= inpMatrixI[2+i][2+j];
+                for(integer k=0; k < SIZEKer; k++)
+                    for(integer l = 0; l < SIZEKer; l++)
+                        inpMatrixIdinKer[k][l] <= inpMatrixI[k+i][l+j];
+
                 done<= 0;
              end
              1:begin 
                 ena <= 1;
                 done<= 0;
              end
-             2:begin convIxKernelOut[i][j] <= convIxKernel/16;
+             2:begin 
+                convIxKernelOut[i][j] <= convIxKernel >= 0  ? convIxKernel/3: 0; //Relu+
                 done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
                 ena <= 0;
              end

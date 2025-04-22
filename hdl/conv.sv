@@ -13,7 +13,6 @@ endmodule
 module conv#(parameter SIZE = 3,WIDTH_BIT = 8)(
     input   logic                 clock                               ,
     input   logic                 nreset                              ,
-    input   logic ena                                                 ,
     input   logic  signed  [WIDTH_BIT-1:0] inpMatrixI    [SIZE-1:0][SIZE-1:0]  ,
     output  logic  signed  [WIDTH_BIT-1:0] convIxKernel
 );
@@ -33,7 +32,7 @@ module conv#(parameter SIZE = 3,WIDTH_BIT = 8)(
                 mulp #(.SIZE(SIZE),.WIDTH_BIT(WIDTH_BIT))mlp(inpMatrixI[i][j],Kernel[i][j],ProducMx[i][j]);
             end
         end
-        for(i =0; i< SIZE; i=i+1)begin:SUM_HOR
+        for(i =0; i< SIZE; i++)begin:SUM_HOR
             for(j = 0; j < SIZE; j++)begin:SUM_HOR
                 if(!j)
                     assign SumHoriz[i][0] = ProducMx[i][0];

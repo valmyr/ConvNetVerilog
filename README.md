@@ -19,6 +19,9 @@ Links úteis:
 
 [Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
 
+[The Convolutional Filter](https://medium.com/advanced-deep-learning/cnn-operation-with-2-kernels-resulting-in-2-feature-mapsunderstanding-the-convolutional-filter-c4aad26cf32)
+
+
 
 
 <img title="pre processamento" alt="Alt text" src="images/preprocessamento.jpg">
