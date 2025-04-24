@@ -49,7 +49,7 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 done<= 0;
              end
              2:begin 
-                convIxKernelOut[i][j] <= convIxKernel >= 0  ? convIxKernel/3: 0; //Relu+
+                convIxKernelOut[i][j] <= convIxKernel >= 0  ? convIxKernel: 0; //Relu+
                 done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
                 ena <= 0;
              end
