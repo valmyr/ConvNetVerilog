@@ -1,4 +1,4 @@
-module indexMatrix#(parameter SIZE = 3,WIDTH_BIT = 8)(
+module indexMatrix#(parameter SIZELin = 3, SIZECol =3,WIDTH_BIT = 8)(
     input   logic                 clock                               ,
     input   logic                 nreset                              ,
     input   logic ena                                                 ,
@@ -13,10 +13,10 @@ module indexMatrix#(parameter SIZE = 3,WIDTH_BIT = 8)(
         end
         else begin
             if(ena)
-                if(i != SIZE && j != SIZE)begin
-                    j <= (j   <  SIZE - 1           )   ? j + 1 : 0 ;
-                    i <= (i == SIZE-1 && j == SIZE-1)   ? 0     : 
-                         (j == SIZE-1               )   ? i + 1 : i ;
+                if(i != SIZELin && j != SIZECol)begin
+                    j <= (j   <  SIZECol - 1           )   ? j + 1 : 0 ;
+                    i <= (i == SIZELin-1 && j == SIZECol-1)   ? 0     : 
+                         (j == SIZECol-1               )   ? i + 1 : i ;
                 end else begin
                     j <= j;
                     i <= i;

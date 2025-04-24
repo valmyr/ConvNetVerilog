@@ -35,6 +35,22 @@ m =
 (4+4,0+4) (4+4,1+4) (4+4,2+4) (4+4,3+4) 
 
 
+0           0
+0           N/2
+N/2         0
+N/2         N/2
+
+0           0           0
+0           0           N/2
+0           N/2         0
+0           N/2         N/2
+N/2         0           0
+N/2         0           0
+N/2         0           N/2
+N/2         N/2         0
+N/2         N/2         N/2
+
+
 Considerações:
 -Matrizes quadradas
 -Divisão inicial por N = 2 

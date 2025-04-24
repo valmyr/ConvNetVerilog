@@ -1,4 +1,4 @@
-module conv2#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
+module conv2#(parameter SIZE =8, SIZEKer = 3, WIDTH_BIT = 8,SUBIMAGENS=4)(
     input  logic                      clock                                                         ,
     input logic                     nreset                                                          ,
     input logic  signed  [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]               ,
@@ -7,71 +7,106 @@ module conv2#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
 );
 
 logic ena;
-logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer0    [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer1    [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer2    [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer3    [SIZEKer-1:0][SIZEKer-1:0];
+// logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer0    [SIZEKer-1:0][SIZEKer-1:0];
+// logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer1    [SIZEKer-1:0][SIZEKer-1:0];
+// logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer2    [SIZEKer-1:0][SIZEKer-1:0];
+// logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer3    [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed [WIDTH_BIT-1:0] convIxKernel[SUBIMAGENS-1:0];
+logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SUBIMAGENS-1:0][SIZEKer-1:0][SIZEKer-1:0];
 
-logic  signed [WIDTH_BIT-1:0] convIxKernel0 ;
-logic  signed [WIDTH_BIT-1:0] convIxKernel1 ;
-logic  signed [WIDTH_BIT-1:0] convIxKernel2 ;
-logic  signed [WIDTH_BIT-1:0] convIxKernel3 ;
+// logic  signed [WIDTH_BIT-1:0] convIxKernel0 ;
+// logic  signed [WIDTH_BIT-1:0] convIxKernel1 ;
+// logic  signed [WIDTH_BIT-1:0] convIxKernel2 ;
+// logic  signed [WIDTH_BIT-1:0] convIxKernel3 ;
+// logic union
+logic [WIDTH_BIT-1:0] i, ii, j, jj, iii, jjj, next,current;
+    generate
+        genvar p;
+        for(p = 0; p < SUBIMAGENS; p++)begin:SUBCONVSS
+                conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CONV2GEN(
+                                                                    .clock(clock)                            ,
+                                                                    .nreset(nreset)                          ,
+                                                                    .inpMatrixI(inpMatrixIdinKer[p])         ,
+                                                                    .convIxKernel(convIxKernel[p])            
+                );
+        end
+    endgenerate
 
-logic [WIDTH_BIT-1:0] i, j, next,current;
-
-
-    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN1(
-        .clock(clock)                          ,
-        .nreset(nreset)                        ,
-        .inpMatrixI(inpMatrixIdinKer0)          ,
-        .convIxKernel(convIxKernel0)            
-    );
-    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN2(
-        .clock(clock)                          ,
-        .nreset(nreset)                        ,
-        .inpMatrixI(inpMatrixIdinKer1)          ,
-        .convIxKernel(convIxKernel1)            
-    );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN3(
-        .clock(clock)                          ,
-        .nreset(nreset)                        ,
-        .inpMatrixI(inpMatrixIdinKer2)          ,
-        .convIxKernel(convIxKernel2)            
-    );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN4(
-        .clock(clock)                          ,
-        .nreset(nreset)                        ,
-        .inpMatrixI(inpMatrixIdinKer3)          ,
-        .convIxKernel(convIxKernel3)            
-    );
-    indexMatrix #(.SIZE(SIZE/2-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndex(
+    // conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN1(
+    //     .clock(clock)                          ,
+    //     .nreset(nreset)                        ,
+    //     .inpMatrixI(inpMatrixIdinKer0)          ,
+    //     .convIxKernel(convIxKernel0)            
+    // );
+    // conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN2(
+    //     .clock(clock)                          ,
+    //     .nreset(nreset)                        ,
+    //     .inpMatrixI(inpMatrixIdinKer1)          ,
+    //     .convIxKernel(convIxKernel1)            
+    // );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN3(
+    //     .clock(clock)                          ,
+    //     .nreset(nreset)                        ,
+    //     .inpMatrixI(inpMatrixIdinKer2)          ,
+    //     .convIxKernel(convIxKernel2)            
+    // );    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN4(
+    //     .clock(clock)                          ,
+    //     .nreset(nreset)                        ,
+    //     .inpMatrixI(inpMatrixIdinKer3)          ,
+    //     .convIxKernel(convIxKernel3)            
+    // );
+    logic [3:0] A;
+    initial A=$sqrt(SUBIMAGENS);
+    indexMatrix #(.SIZELin(SIZE/$sqrt(SUBIMAGENS)-SIZEKer+1),.SIZECol(SIZE/$sqrt(SUBIMAGENS)-SIZEKer+3),.WIDTH_BIT(WIDTH_BIT))slicedIndexVertic(
         .nreset(nreset),
         .clock(clock),
         .i(i),
         .ena(ena),
         .j(j)
     );
+
+    indexMatrix #(.SIZELin(SIZE/$sqrt(SUBIMAGENS)-SIZEKer+3),.SIZECol(SIZE/$sqrt(SUBIMAGENS)-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndexHoriz(
+        .nreset(nreset),
+        .clock(clock),
+        .i(ii),
+        .ena(ena),
+        .j(jj)
+    );
+
+    indexMatrix #(.SIZELin(SIZE-SIZEKer+1),.SIZECol(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndexout(
+        .nreset(nreset),
+        .clock(clock),
+        .i(iii),
+        .ena(ena),
+        .j(jjj)
+    );
     always_ff@(posedge clock,negedge nreset)begin
         if(!nreset)begin
-            for(integer k=0; k < SIZEKer; k++)
-                for(integer l = 0; l < SIZEKer; l++)begin
-                    inpMatrixIdinKer0[k][l] <= 0;
-                    inpMatrixIdinKer1[k][l] <= 0;
-                    inpMatrixIdinKer2[k][l] <= 0;
-                    inpMatrixIdinKer3[k][l] <= 0;
-                end
-
-            ena= 0;
-            current<= 0;
-            done<= 0;
+            for(integer k = 0; k < SIZEKer; k++)
+                for(integer l = 0; l < SIZEKer; l++)
+                    for(integer c = 0; c < SUBIMAGENS; c++)
+                        inpMatrixIdinKer[c][k][l] <= 0;
+                        // inpMatrixIdinKer[0][k][l] <= inpMatrixI[k+i+0     ][l+j+0     ];
+                        // inpMatrixIdinKer[1][k][l] <= inpMatrixI[k+i+     0][l+j+SIZE/2];
+                        // inpMatrixIdinKer[2][k][l] <= inpMatrixI[k+i+SIZE/2][l+j+0     ];
+                        // inpMatrixIdinKer[3][k][l] <= inpMatrixI[k+i+SIZE/2][l+j+SIZE/2];
+            ena     <= 0;
+            current <= 0;
+            done <= 0;
         end else begin
             case(current)
              0:begin
                 ena <=0;
-                for(integer k=0; k < SIZEKer; k++)
+                for(integer k = 0; k < SIZEKer; k++)
                     for(integer l = 0; l < SIZEKer; l++)begin
-                        inpMatrixIdinKer0[k][l] <= inpMatrixI[k+i+0     ][l+j+0     ];
-                        inpMatrixIdinKer1[k][l] <= inpMatrixI[k+i+     0][l+j+SIZE/2];
-                        inpMatrixIdinKer2[k][l] <= inpMatrixI[k+i+SIZE/2][l+j+0     ];
-                        inpMatrixIdinKer3[k][l] <= inpMatrixI[k+i+SIZE/2][l+j+SIZE/2];
+                        // inpMatrixIdinKer[0][k][l] <= inpMatrixI[k+i+0     ][l+j+0     ];
+                        // inpMatrixIdinKer[1][k][l] <= inpMatrixI[k+i+     0][l+j+SIZE/2];
+                        // inpMatrixIdinKer[2][k][l] <= inpMatrixI[k+i+SIZE/2][l+j+0     ];
+                        // inpMatrixIdinKer[3][k][l] <= inpMatrixI[k+i+SIZE/2][l+j+SIZE/2];
+                        for(integer c = 0; c < SUBIMAGENS; c++)
+                            if(c%2)
+                                inpMatrixIdinKer[c][k][l] <= inpMatrixI[k+i+c[1]*SIZE/A     ][l+j+c[0]*SIZE/A];
+                            else
+                                inpMatrixIdinKer[c][k][l] <= inpMatrixI[k+ii+c[1]*SIZE/A     ][l+jj+c[0]*SIZE/A];
                     end
 
                 done<= 0;
@@ -81,11 +116,17 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 done<= 0;
              end
              2:begin 
-                convIxKernelOut[i    + 0][j     +0] <= convIxKernel0 >= 0  ? convIxKernel1/3: 0; //Relu+
-                convIxKernelOut[i     +0][j+SIZE/2] <= convIxKernel1 >= 0  ? convIxKernel2/3: 0; //Relu+
-                convIxKernelOut[i+SIZE/2][j+     0] <= convIxKernel2 >= 0  ? convIxKernel2/3: 0; //Relu+
-                convIxKernelOut[i+SIZE/2][j+SIZE/2] <= convIxKernel3 >= 0  ? convIxKernel3/3: 0; //Relu+
-                done <= i == SIZE/2-SIZEKer && j == SIZE/2-SIZEKer;
+                // convIxKernelOut[i    + 0][j     +0] <= convIxKernel[0] >= 0  ? convIxKernel[0]/3: 0; //Relu+
+                // convIxKernelOut[i     +0][j+SIZE/2] <= convIxKernel[1] >= 0  ? convIxKernel[1]/3: 0; //Relu+
+                // convIxKernelOut[i+SIZE/2][j+     0] <= convIxKernel[2] >= 0  ? convIxKernel[2]/3: 0; //Relu+
+                // convIxKernelOut[i+SIZE/2][j+SIZE/2] <= convIxKernel[3] >= 0  ? convIxKernel[3]/3: 0; //Relu+
+                for(integer c = 0; c < SUBIMAGENS; c++)
+                    if(c%2)
+                        convIxKernelOut[iii+c[1]*SIZE/A][jjj+c[0]*SIZE/A] <= convIxKernel[c] >= 0  ? convIxKernel[c]: 0; //Relu+
+                    else
+                        convIxKernelOut[iii+c[1]*SIZE/A][jjj+c[0]*SIZE/A] <= convIxKernel[c] >= 0  ? convIxKernel[c]: 0; //Relu+
+
+                done <= iii == SIZE-SIZEKer && jjj == SIZE-SIZEKer;
                 ena <= 0;
              end
             endcase
