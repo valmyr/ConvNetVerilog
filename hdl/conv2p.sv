@@ -95,10 +95,10 @@ logic [WIDTH_BIT-1:0] i, ii, iii, j, jj, jjj, next,current;
                 done<= 0;
              end
              2:begin 
-                convIxKernelOut[i    + 0][j     +0] <= convIxKernel0 >= 0  ? convIxKernel0: 0; //Relu+
-                convIxKernelOut[i     +0][j+SIZE/2] <= convIxKernel1 >= 0  ? convIxKernel1: 0; //Relu+
-                convIxKernelOut[ii+SIZE/2][jj+     0] <= convIxKernel2 >= 0  ? convIxKernel2: 0; //Relu+
-                convIxKernelOut[ii+SIZE/2][jj+SIZE/2] <= convIxKernel3 >= 0  ? convIxKernel3: 0; //Relu+
+                convIxKernelOut[i     + 0][j     +0 ] <= convIxKernel0 >= 0  ? convIxKernel0/2: 0; //Relu+
+                convIxKernelOut[i      +0][j+SIZE/2 ] <= convIxKernel1 >= 0  ? convIxKernel1/2: 0; //Relu+
+                convIxKernelOut[ii+SIZE/2][jj+     0] <= convIxKernel2 >= 0  ? convIxKernel2/2: 0; //Relu+
+                convIxKernelOut[ii+SIZE/2][jj+SIZE/2] <= convIxKernel3 >= 0  ? convIxKernel3/2: 0; //Relu+
                 done <= iii == SIZE/2-SIZEKer+2 && jjj == SIZE/2-SIZEKer+2;
                 ena <= 0;
              end
