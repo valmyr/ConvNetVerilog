@@ -22,9 +22,9 @@ module conv#(parameter SIZE = 3,WIDTH_BIT = 8)(
                                     //  inpMatrixI[1][0]*Kernel[1][0]+inpMatrixI[1][1]*Kernel[1][1]+inpMatrixI[1][2]*Kernel[1][2]+
                                     //  inpMatrixI[2][0]*Kernel[2][0]+inpMatrixI[2][1]*Kernel[2][1]+inpMatrixI[2][2]*Kernel[2][2]):0;  
 
-    logic [WIDTH_BIT-1:0] ProducMx[SIZE-1:0][SIZE-1:0];
-    logic [WIDTH_BIT-1:0] SumHoriz[SIZE-1:0][SIZE-1:0];
-    logic [WIDTH_BIT-1:0] SumVertic[SIZE-1:0];
+    logic signed [WIDTH_BIT-1:0] ProducMx[SIZE-1:0][SIZE-1:0];
+    logic signed [WIDTH_BIT-1:0] SumHoriz[SIZE-1:0][SIZE-1:0];
+    logic signed [WIDTH_BIT-1:0] SumVertic[SIZE-1:0];
     generate 
         genvar i,j;
         for(i =0; i < SIZE; i++)begin:MULTI_A
