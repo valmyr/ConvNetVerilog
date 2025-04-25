@@ -18,7 +18,7 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
         .inpMatrixI(inpMatrixIdinKer)          ,
         .convIxKernel(convIxKernel)            
     );
-    indexMatrix #(.SIZE(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndex(
+    indexMatrix #(.SIZELin(SIZE-SIZEKer+1),.SIZECol(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndex(
         .nreset(nreset),
         .clock(clock),
         .i(i),
