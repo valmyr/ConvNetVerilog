@@ -14,9 +14,9 @@ module indexMatrix#(parameter SIZELin = 3, SIZECol =3,WIDTH_BIT = 8)(
         else begin
             if(ena)
                 if(i != SIZELin && j != SIZECol)begin
-                    j <= (j   <  SIZECol - 1           )   ? j + 1 : 0 ;
+                    j <= (j   <  SIZECol - 1              )   ? j + 1 : 0 ;
                     i <= (i == SIZELin-1 && j == SIZECol-1)   ? 0     : 
-                         (j == SIZECol-1               )   ? i + 1 : i ;
+                         (j == SIZECol-1                  )   ? i + 1 : i ;
                 end else begin
                     j <= j;
                     i <= i;

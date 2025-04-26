@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =640, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZE =8, SIZEKer = 3, WIDTH_BIT = 16;
 logic clock, nreset,ena,done;
 logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
@@ -51,7 +51,7 @@ initial begin
         $display("\n");
     end
     
-    $display("Tempo de exerc %0t ",timestop);
+    $display("Tempo de exerc %0t OK... ",timestop);
 
 end
 endmodule
