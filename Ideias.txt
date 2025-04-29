@@ -125,3 +125,5 @@ inpMatrixIdinKer[0][1][0][1] <= inpMatrixI[01][09];
 inpMatrixIdinKer[1][0][0][1] <= inpMatrixI[17][17];
 inpMatrixIdinKer[1][1][0][1] <= inpMatrixI[25][25];
 
+
+

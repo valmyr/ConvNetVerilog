@@ -1,5 +1,5 @@
 // `define WINDOWING = SIZE/$sqrt(3)
-module conv2#(parameter SIZE =320, SIZEKer = 3, WIDTH_BIT = 16, SUBIMAGENS = 2, TOTSUBIMAGEM = 4)//sqrt(n**2)
+module conv2#(parameter SIZE =320, SIZEKer = 3, WIDTH_BIT = 16, TOTSUBIMAGEM = 16)//sqrt(n**2)
 (
     input   logic                               clock                                                           ,
     input   logic                               nreset                                                          ,
@@ -10,7 +10,7 @@ module conv2#(parameter SIZE =320, SIZEKer = 3, WIDTH_BIT = 16, SUBIMAGENS = 2, 
 logic ena;
 logic  signed [WIDTH_BIT-1:0] inpMatrixIdinKer[TOTSUBIMAGEM-1:0][TOTSUBIMAGEM-1:0][SIZEKer-1:0][SIZEKer-1:0];
 logic  signed [WIDTH_BIT-1:0] convIxKernel[TOTSUBIMAGEM-1:0][TOTSUBIMAGEM-1:0];
-logic  signed [WIDTH_BIT-1:0] subdivisoes[SUBIMAGENS-1:0][SUBIMAGENS-1:0];
+logic         [WIDTH_BIT-1:0] subdivisoes[TOTSUBIMAGEM-1:0];
 logic [WIDTH_BIT-1:0] i, ii, j, jj, next,current;
 generate
     for(genvar s = 0; s < TOTSUBIMAGEM; s++)begin:CONVMOD2
@@ -32,15 +32,6 @@ endgenerate
         .ena                                    (       ena                         ),
         .j                                      (       j                           )
     );
-
-    indexMatrix #(.SIZELin(SIZE/TOTSUBIMAGEM-SIZEKer+1),.SIZECol(SIZE/TOTSUBIMAGEM-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndexVertic2
-    (
-        .nreset                                 (       nreset                      ),
-        .clock                                  (       clock                       ),
-        .i                                      (       iii                           ),
-        .ena                                    (       ena                         ),
-        .j                                      (       jjj                           )
-    );
     indexMatrix #(.SIZELin(SIZE-SIZEKer+1),.SIZECol(SIZE-SIZEKer+1),.WIDTH_BIT(WIDTH_BIT))slicedIndexOut
     (
         .nreset                                 (       nreset                      ),
@@ -51,21 +42,19 @@ endgenerate
     );
     //Constantes usadas nas sub janelas de cada sub imagem
     initial begin
-        integer f = 0;
-        for(integer  s = 0; s < SUBIMAGENS; s++)begin
-            for(integer w = 0; w < SUBIMAGENS; w++)begin
-                subdivisoes[s][w] = f;
-                f+=SIZE/(SUBIMAGENS*SUBIMAGENS);
+        static integer f = 0;
+            for(integer w = 0; w < TOTSUBIMAGEM; w++)begin
+                subdivisoes[w] = f;
+                f+=SIZE/(TOTSUBIMAGEM);
             end
-        end
 
     end
     always_ff@(posedge clock,negedge nreset)begin
         if(!nreset)begin
             for(integer k=0; k < SIZEKer; k++)
                 for(integer l = 0; l < SIZEKer; l++)
-                    for(integer s = 0; s < SUBIMAGENS; s++)
-                        for(integer w = 0; w < SUBIMAGENS; w++)
+                    for(integer s = 0; s < TOTSUBIMAGEM; s++)
+                        for(integer w = 0; w < TOTSUBIMAGEM; w++)
                             inpMatrixIdinKer[s][w][k][l] <= 0;
             ena     <= 0;
             current <= 0;
@@ -74,29 +63,29 @@ endgenerate
             case(current)
              0:begin
                 ena <= 0;
-                // for(integer s = 0; s < SUBIMAGENS; s++)
-                    // for(integer w = 0; w < SUBIMAGENS; w++)
                         for(integer k = 0; k < SIZEKer; k++)begin
                             for(integer l = 0; l < SIZEKer; l++)begin
-                                inpMatrixIdinKer[0][0][k][l] <= inpMatrixI[k+i+subdivisoes[0][0]][l+j+subdivisoes[0][0]];
-                                inpMatrixIdinKer[0][1][k][l] <= inpMatrixI[k+i+subdivisoes[0][0]][l+j+subdivisoes[0][1]];
-                                inpMatrixIdinKer[0][2][k][l] <= inpMatrixI[k+i+subdivisoes[0][0]][l+j+subdivisoes[1][0]];
-                                inpMatrixIdinKer[0][3][k][l] <= inpMatrixI[k+i+subdivisoes[0][0]][l+j+subdivisoes[1][1]];
+                                for(integer h = 0; h < TOTSUBIMAGEM; h++)
+                                    for(integer d = 0; d < TOTSUBIMAGEM; d++)
+                                         inpMatrixIdinKer[h][d][k][l] <= inpMatrixI[k+i+subdivisoes[h]][l+j+subdivisoes[d]];
+                                // inpMatrixIdinKer[0][1][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[1]];
+                                // inpMatrixIdinKer[0][2][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[2]];
+                                // inpMatrixIdinKer[0][3][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[3]];
 
-                                inpMatrixIdinKer[1][0][k][l] <= inpMatrixI[k+i+subdivisoes[0][1]][l+j+subdivisoes[0][0]];
-                                inpMatrixIdinKer[1][1][k][l] <= inpMatrixI[k+i+subdivisoes[0][1]][l+j+subdivisoes[0][1]];
-                                inpMatrixIdinKer[1][2][k][l] <= inpMatrixI[k+i+subdivisoes[0][1]][l+j+subdivisoes[1][0]];
-                                inpMatrixIdinKer[1][3][k][l] <= inpMatrixI[k+i+subdivisoes[0][1]][l+j+subdivisoes[1][1]];
+                                // inpMatrixIdinKer[1][0][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[0]];
+                                // inpMatrixIdinKer[1][1][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[1]];
+                                // inpMatrixIdinKer[1][2][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[2]];
+                                // inpMatrixIdinKer[1][3][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[3]];
 
-                                inpMatrixIdinKer[2][0][k][l] <= inpMatrixI[k+i+subdivisoes[1][0]][l+j+subdivisoes[0][0]];
-                                inpMatrixIdinKer[2][1][k][l] <= inpMatrixI[k+i+subdivisoes[1][0]][l+j+subdivisoes[0][1]];
-                                inpMatrixIdinKer[2][2][k][l] <= inpMatrixI[k+i+subdivisoes[1][0]][l+j+subdivisoes[1][0]];
-                                inpMatrixIdinKer[2][3][k][l] <= inpMatrixI[k+i+subdivisoes[1][0]][l+j+subdivisoes[1][1]];
+                                // inpMatrixIdinKer[2][0][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[0]];
+                                // inpMatrixIdinKer[2][1][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[1]];
+                                // inpMatrixIdinKer[2][2][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[2]];
+                                // inpMatrixIdinKer[2][3][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[3]];
 
-                                inpMatrixIdinKer[3][0][k][l] <= inpMatrixI[k+i+subdivisoes[1][1]][l+j+subdivisoes[0][0]];
-                                inpMatrixIdinKer[3][1][k][l] <= inpMatrixI[k+i+subdivisoes[1][1]][l+j+subdivisoes[0][1]];
-                                inpMatrixIdinKer[3][2][k][l] <= inpMatrixI[k+i+subdivisoes[1][1]][l+j+subdivisoes[1][0]];
-                                inpMatrixIdinKer[3][3][k][l] <= inpMatrixI[k+i+subdivisoes[1][1]][l+j+subdivisoes[1][1]];
+                                // inpMatrixIdinKer[3][0][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[0]];
+                                // inpMatrixIdinKer[3][1][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[1]];
+                                // inpMatrixIdinKer[3][2][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[2]];
+                                // inpMatrixIdinKer[3][3][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[3]];
 
 
 
@@ -109,30 +98,28 @@ endgenerate
                 done <= 0;
              end
              2:begin 
-                // for(integer s = 0; s < SUBIMAGENS; s++)
-                    // for(integer w = 0; w < SUBIMAGENS; w++)
-                        convIxKernelOut[i+subdivisoes[0][0]][j+subdivisoes[0][0]] <= convIxKernel[0][0] >= 0  ? convIxKernel[0][0]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][0]][j+subdivisoes[0][1]] <= convIxKernel[0][1] >= 0  ? convIxKernel[0][1]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][0]][j+subdivisoes[1][0]] <= convIxKernel[0][2] >= 0  ? convIxKernel[0][2]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][0]][j+subdivisoes[1][1]] <= convIxKernel[0][3] >= 0  ? convIxKernel[0][3]: 0; //Relu+
+                for(integer h = 0; h < TOTSUBIMAGEM; h++)
+                    for(integer d = 0; d < TOTSUBIMAGEM; d++)
+                        convIxKernelOut[i+subdivisoes[h]][j+subdivisoes[d]] <= convIxKernel[h][d] >= 0  ? convIxKernel[h][d]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[0]][j+subdivisoes[1]] <= convIxKernel[0][1] >= 0  ? convIxKernel[0][1]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[0]][j+subdivisoes[2]] <= convIxKernel[0][2] >= 0  ? convIxKernel[0][2]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[0]][j+subdivisoes[3]] <= convIxKernel[0][3] >= 0  ? convIxKernel[0][3]: 0; //Relu+
 
-                        convIxKernelOut[i+subdivisoes[0][1]][j+subdivisoes[0][0]] <= convIxKernel[1][0] >= 0  ? convIxKernel[1][0]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][1]][j+subdivisoes[0][1]] <= convIxKernel[1][1] >= 0  ? convIxKernel[1][1]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][1]][j+subdivisoes[1][0]] <= convIxKernel[1][2] >= 0  ? convIxKernel[1][2]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[0][1]][j+subdivisoes[1][1]] <= convIxKernel[1][3] >= 0  ? convIxKernel[1][3]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[1]][j+subdivisoes[0]] <= convIxKernel[1][0] >= 0  ? convIxKernel[1][0]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[1]][j+subdivisoes[1]] <= convIxKernel[1][1] >= 0  ? convIxKernel[1][1]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[1]][j+subdivisoes[2]] <= convIxKernel[1][2] >= 0  ? convIxKernel[1][2]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[1]][j+subdivisoes[3]] <= convIxKernel[1][3] >= 0  ? convIxKernel[1][3]: 0; //Relu+
 
-                        convIxKernelOut[i+subdivisoes[1][0]][j+subdivisoes[0][0]] <= convIxKernel[2][0] >= 0  ? convIxKernel[2][0]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][0]][j+subdivisoes[0][1]] <= convIxKernel[2][1] >= 0  ? convIxKernel[2][1]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][0]][j+subdivisoes[1][0]] <= convIxKernel[2][2] >= 0  ? convIxKernel[2][2]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][0]][j+subdivisoes[1][1]] <= convIxKernel[2][3] >= 0  ? convIxKernel[2][3]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[2]][j+subdivisoes[0]] <= convIxKernel[2][0] >= 0  ? convIxKernel[2][0]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[2]][j+subdivisoes[1]] <= convIxKernel[2][1] >= 0  ? convIxKernel[2][1]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[2]][j+subdivisoes[2]] <= convIxKernel[2][2] >= 0  ? convIxKernel[2][2]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[2]][j+subdivisoes[3]] <= convIxKernel[2][3] >= 0  ? convIxKernel[2][3]: 0; //Relu+
 
-                        convIxKernelOut[i+subdivisoes[1][1]][j+subdivisoes[0][0]] <= convIxKernel[3][0] >= 0  ? convIxKernel[3][0]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][1]][j+subdivisoes[0][1]] <= convIxKernel[3][1] >= 0  ? convIxKernel[3][1]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][1]][j+subdivisoes[1][0]] <= convIxKernel[3][2] >= 0  ? convIxKernel[3][2]: 0; //Relu+
-                        convIxKernelOut[i+subdivisoes[1][1]][j+subdivisoes[1][1]] <= convIxKernel[3][3] >= 0  ? convIxKernel[3][3]: 0; //Relu+
-
-                done <= ii == SIZE/(TOTSUBIMAGEM)-SIZEKer+2 && jj == SIZE/TOTSUBIMAGEMgit -SIZEKer+2;
-                $display(done);
+                        // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[0]] <= convIxKernel[3][0] >= 0  ? convIxKernel[3][0]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[1]] <= convIxKernel[3][1] >= 0  ? convIxKernel[3][1]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[2]] <= convIxKernel[3][2] >= 0  ? convIxKernel[3][2]: 0; //Relu+
+                        // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[3]] <= convIxKernel[3][3] >= 0  ? convIxKernel[3][3]: 0; //Relu+
+                done <= ii == SIZE/(TOTSUBIMAGEM)-SIZEKer && jj == SIZE/TOTSUBIMAGEM -SIZEKer;
                 ena <= 0;
              end
             endcase
@@ -145,3 +132,27 @@ endgenerate
         2:next = 0;
     endcase
 endmodule
+/*
+
+
+                                inpMatrixIdinKer[0][0][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[0]];
+                                inpMatrixIdinKer[0][1][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[1]];
+                                inpMatrixIdinKer[0][2][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[2]];
+                                inpMatrixIdinKer[0][3][k][l] <= inpMatrixI[k+i+subdivisoes[0]][l+j+subdivisoes[3]];
+
+                                inpMatrixIdinKer[1][0][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[0]];
+                                inpMatrixIdinKer[1][1][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[1]];
+                                inpMatrixIdinKer[1][2][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[2]];
+                                inpMatrixIdinKer[1][3][k][l] <= inpMatrixI[k+i+subdivisoes[1]][l+j+subdivisoes[3]];
+
+                                inpMatrixIdinKer[2][0][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[0]];
+                                inpMatrixIdinKer[2][1][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[1]];
+                                inpMatrixIdinKer[2][2][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[2]];
+                                inpMatrixIdinKer[2][3][k][l] <= inpMatrixI[k+i+subdivisoes[2]][l+j+subdivisoes[3]];
+
+                                inpMatrixIdinKer[3][0][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[0]];
+                                inpMatrixIdinKer[3][1][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[1]];
+                                inpMatrixIdinKer[3][2][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[2]];
+                                inpMatrixIdinKer[3][3][k][l] <= inpMatrixI[k+i+subdivisoes[3]][l+j+subdivisoes[3]];
+
+                                */
