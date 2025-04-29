@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =320, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZE =32, SIZEKer = 3, WIDTH_BIT = 16;
 logic clock, nreset,ena,done;
 logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
@@ -19,7 +19,7 @@ initial begin
     $readmemh("simulation/I.txt",inpMatrixI);
     $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
 
-        // $writememh("simulation/IxKernel.txt",convIxKernelOut);
+    $writememh("simulation/IxKernel.txt",convIxKernelOut);
     for(integer i = 0; i < SIZE; i++)begin
         for(integer j = 0; j < SIZE; j++)begin
             $write(inpMatrixI[i][j]);
@@ -43,6 +43,12 @@ initial begin
         end
         $display("\n");
     end
+    $display("------------------------------------------------------------------------------------------------------------OUTPUT------------------------------------------------------------------------------------------------");
+    $display("------------------------------------------------------------------------------------------------------------OUTPUT------------------------------------------------------------------------------------------------");
+    $display("------------------------------------------------------------------------------------------------------------OUTPUT------------------------------------------------------------------------------------------------");
+    $display("------------------------------------------------------------------------------------------------------------OUTPUT------------------------------------------------------------------------------------------------");
+    $display("------------------------------------------------------------------------------------------------------------OUTPUT------------------------------------------------------------------------------------------------");
+
     $writememh("simulation/IxKernel.txt",convIxKernelOut);
     for(integer i = 0; i < SIZE-SIZEKer+1; i++)begin
         for(integer j = 0; j < SIZE-SIZEKer+1; j++)begin

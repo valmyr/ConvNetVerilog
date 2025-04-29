@@ -89,3 +89,39 @@ m1 = m[0:4][0:4]
 6 7 8 9 9 8 7 6
 6 7 8 9 9 8 7 6
 6 7 8 9 9 8 7 6
+
+0,    N/4, 
+N/2, 3N/4
+
+
+inpMatrixIdinKer[s][w][k][l] <= inpMatrixI[k+i+subdivisoes[s][w]][l+j+subdivisoes[s][w]];
+
+inpMatrixIdinKer[0][0][k][l] <= inpMatrixI[k+i+0][l+j+0];
+
+N=32
+
+
+inpMatrixIdinKer[0][0][k][l] <= inpMatrixI[k+i+00][l+j+00];
+inpMatrixIdinKer[0][1][k][l] <= inpMatrixI[k+i+00][l+j+08];
+inpMatrixIdinKer[1][0][k][l] <= inpMatrixI[k+i+16][l+j+16];
+inpMatrixIdinKer[1][1][k][l] <= inpMatrixI[k+i+24][l+j+24];
+
+
+
+inpMatrixIdinKer[0][0][0][0] <= inpMatrixI[00][00];
+inpMatrixIdinKer[0][1][0][0] <= inpMatrixI[00][08];
+inpMatrixIdinKer[1][0][0][0] <= inpMatrixI[16][16];
+inpMatrixIdinKer[1][1][0][0] <= inpMatrixI[24][24];
+
+inpMatrixIdinKer[0][0][0][1] <= inpMatrixI[0+1+00][0+1+00];
+inpMatrixIdinKer[0][1][0][1] <= inpMatrixI[0+1+00][0+1+08];
+inpMatrixIdinKer[1][0][0][1] <= inpMatrixI[0+1+16][0+1+16];
+inpMatrixIdinKer[1][1][0][1] <= inpMatrixI[0+1+24][0+1+24];
+
+
+
+inpMatrixIdinKer[0][0][0][1] <= inpMatrixI[01][01];
+inpMatrixIdinKer[0][1][0][1] <= inpMatrixI[01][09];
+inpMatrixIdinKer[1][0][0][1] <= inpMatrixI[17][17];
+inpMatrixIdinKer[1][1][0][1] <= inpMatrixI[25][25];
+
