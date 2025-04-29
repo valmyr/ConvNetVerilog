@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =32, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZE =64, SIZEKer = 3, WIDTH_BIT = 8;
 logic clock, nreset,ena,done;
 logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
@@ -35,6 +35,7 @@ initial begin
     timestart = $realtime();
     do begin 
         #1 clock = ~clock;
+        // #90000 $finish;
     end while(!done);
     timestop= $realtime()-timestart;
     for(integer i = 0; i < SIZEKer; i++)begin
@@ -52,7 +53,7 @@ initial begin
     $writememh("simulation/IxKernel.txt",convIxKernelOut);
     for(integer i = 0; i < SIZE-SIZEKer+1; i++)begin
         for(integer j = 0; j < SIZE-SIZEKer+1; j++)begin
-            $write(convIxKernelOut[i][j]);
+            $write("%d ",convIxKernelOut[i][j]);
         end
         $display("\n");
     end
