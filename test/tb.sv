@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =320, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZE =64, SIZEKer = 2, WIDTH_BIT = 16;
 logic clock, nreset,ena,done;
 logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
@@ -7,17 +7,19 @@ logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
 logic signed  [WIDTH_BIT-1:0] convIxKernel ;
 
 logic signed  [WIDTH_BIT-1:0] convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0] ;
+// logic signed  [WIDTH_BIT-1:0] convIxKernelOut [SIZE-1:0][SIZE-1:0] ;
+
 logic signed  [WIDTH_BIT-1:0] i, j, next,current;
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT))top_conv (
-    .clock(clock)       ,
-    .nreset(nreset)     ,
-    .inpMatrixI(inpMatrixI),
-    .done(done),
-    .convIxKernelOut(convIxKernelOut)
+maxpooling #(.SIZEOUTCONV(SIZE),.SIZEPOOLING(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) maxPooling (
+    .clock(clock)                   ,
+    .nreset(nreset)                 ,
+    .convIxKernelOut(inpMatrixI)    ,
+    .done(done)                     ,
+    .maxPoolingOut(convIxKernelOut)
 );
 initial begin
     $readmemh("simulation/I.txt",inpMatrixI);
-    $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
+    // $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
 
         // $writememh("simulation/IxKernel.txt",convIxKernelOut);
     for(integer i = 0; i < SIZE; i++)begin
@@ -34,6 +36,7 @@ initial begin
     #1 nreset = 1;
     do begin 
         #1 clock = ~clock;
+        // $display("%d %d %d",maxPooling.bufferMaxPooling´[0][0],maxPooling.bufferMaxPooling´[0][1],maxPooling.ena,maxPooling.maxBuffer[0]);
     end while(!done);
     for(integer i = 0; i < SIZEKer; i++)begin
         for(integer j = 0; j < SIZEKer; j++)begin
