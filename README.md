@@ -24,7 +24,7 @@ Links úteis:
 
 
 <p align="center" width="100%">
-    <img width="30%" src="images/preprocessamento.jpg">
-    <img width="30%" src="images/posprocessamento.jpg">
-    <img width="30%" src="images/maxpoolingposprocessamento.jpg">
+    <img width="32%" src="images/preprocessamento.jpg">
+    <img width="32%" src="images/posprocessamento.jpg">
+    <img width="32%" src="images/maxpoolingposprocessamento.jpg">
 </p>
