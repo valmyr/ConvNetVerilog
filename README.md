@@ -23,7 +23,8 @@ Links úteis:
 
 
 
-
-<img title="pre processamento" alt="Alt text" src="images/preprocessamento.jpg">
-<img title="pos processamento" alt="Alt text" src="images/posprocessamento.jpg">
-<img title="pos max pooling processamento" alt="Alt text" src="images/maxpoolingposprocessamento.jpg">
+<p align="center" width="100%">
+    <img width="30%" src="images/preprocessamento.jpg">
+    <img width="30%" src="images/posprocessamento.jpg">
+    <img width="30%" src="images/maxpoolingposprocessamento.jpg">
+</p>
