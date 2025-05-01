@@ -1,27 +1,40 @@
 module tb;
-parameter SIZE =64, SIZEKer = 2, WIDTH_BIT = 16;
-logic clock, nreset,ena,done;
-logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
-logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
+parameter SIZE =256, SIZEKer = 3, WIDTH_BIT = 16;
+parameter SIZEPOOLING = 2,SIZEOUTCONV = SIZE - SIZEPOOLING;
 
-logic signed  [WIDTH_BIT-1:0] convIxKernel ;
+logic clock, nreset1,nreset2,ena,done1, done2;
 
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0] ;
-// logic signed  [WIDTH_BIT-1:0] convIxKernelOut [SIZE-1:0][SIZE-1:0] ;
+logic signed  [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0]                                      ;
+logic signed  [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0]                                ;
+logic signed  [WIDTH_BIT-1:0] convIxKernel                                                                  ;
+logic signed  [WIDTH_BIT-1:0] convIxKernelOut     [SIZE-SIZEKer:0][SIZE-SIZEKer:0 ]   ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingOut       [SIZEOUTCONV-SIZEPOOLING:0][SIZEOUTCONV-SIZEPOOLING:0 ]   ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel  [SIZEOUTCONV-1:0]          [SIZEOUTCONV-1:0           ]   ;
 
 logic signed  [WIDTH_BIT-1:0] i, j, next,current;
-maxpooling #(.SIZEOUTCONV(SIZE),.SIZEPOOLING(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) maxPooling (
-    .clock(clock)                   ,
-    .nreset(nreset)                 ,
-    .convIxKernelOut(inpMatrixI)    ,
-    .done(done)                     ,
-    .maxPoolingOut(convIxKernelOut)
+
+
+maxpooling #(.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling (
+    .clock                              (clock              )                               ,
+    .nreset                             (nreset1            )                               ,
+    .convIxKernelOut                    (convIxKernelOut    )                               ,
+    .done                               (done1              )                               ,
+    .maxPoolingOut                      (maxPoolingOut      )
 );
+
+
+conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) top_conv (
+    .clock                  (clock                          )                               ,
+    .nreset                 (nreset2                        )                               ,
+    .inpMatrixI             (inpMatrixI                     )                               ,
+    .done                   (done2                          )                               ,
+    .convIxKernelOut        (convIxKernelOut                )
+);
+
 initial begin
     $readmemh("simulation/I.txt",inpMatrixI);
-    // $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
-
-        // $writememh("simulation/IxKernel.txt",convIxKernelOut);
+    $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
+    $display("Matriz de Entrada>> \n");
     for(integer i = 0; i < SIZE; i++)begin
         for(integer j = 0; j < SIZE; j++)begin
             $write(inpMatrixI[i][j]);
@@ -32,18 +45,29 @@ initial begin
     // $display("\n");
     // $display("\n");
     clock =0;
-    #1nreset = 0;
-    #1 nreset = 1;
+    nreset1 = 0;
+    nreset2 = 0;
+    #1 nreset2 = 1;
     do begin 
         #1 clock = ~clock;
-        // $display("%d %d %d",maxPooling.bufferMaxPooling´[0][0],maxPooling.bufferMaxPooling´[0][1],maxPooling.ena,maxPooling.maxBuffer[0]);
-    end while(!done);
+    end while(!done2);
+    
+    $writememh("simulation/IxKernel.txt",convIxKernelOut);
+    clock =0;
+    // #1 nreset2 = 0;
+    #1 nreset1 = 1;
+
+    do begin 
+        #1 clock = ~clock;
+    end while(!done1);
+    $display("Kernel>> \n");
     for(integer i = 0; i < SIZEKer; i++)begin
         for(integer j = 0; j < SIZEKer; j++)begin
             $write(inpMatrixIdinKer[i][j]);
         end
         $display("\n");
     end
+    $display("Matriz de Convoluída>> \n");
     $writememh("simulation/IxKernel.txt",convIxKernelOut);
     for(integer i = 0; i < SIZE-SIZEKer+1; i++)begin
         for(integer j = 0; j < SIZE-SIZEKer+1; j++)begin
@@ -51,6 +75,15 @@ initial begin
         end
         $display("\n");
     end
+    $display("Matriz Maxpooling>> \n");
+    for(integer i = 0; i < SIZEOUTCONV - SIZEPOOLING + 1; i++)begin
+        for(integer j = 0; j < SIZEOUTCONV - SIZEPOOLING + 1; j++)begin
+            $write(maxPoolingOut[i][j]);
+        end
+        $display("\n");
+    end
+    $writememh("simulation/maxIxKernelPooling.txt",maxPoolingOut);
+
 
 end
 endmodule
