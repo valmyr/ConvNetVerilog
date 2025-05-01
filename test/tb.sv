@@ -1,5 +1,5 @@
 module tb;
-parameter SIZE =512, SIZEKer = 3, WIDTH_BIT = 16,TOTSUBIMAGEM = 32;
+parameter SIZE =512, SIZEKer = 3, WIDTH_BIT = 8,TOTSUBIMAGEM = 64;
 logic clock, nreset,ena,done;
 logic signed [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0];
 logic signed [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0];
