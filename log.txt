@@ -1,0 +1,71 @@
+TOOL:	xrun	23.09-s003: Started on May 01, 2025 at 23:35:40 -03
+TOOL:	xrun(64)	23.09-s003: Started on May 01, 2025 at 23:35:41 -03
+xrun(64): 23.09-s003: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+file: hdl/conv.sv
+	module worklib.mulp:sv
+		errors: 0, warnings: 0
+	module worklib.sum:sv
+		errors: 0, warnings: 0
+	module worklib.conv:sv
+		errors: 0, warnings: 0
+file: hdl/conv2p.sv
+	module worklib.conv2:sv
+		errors: 0, warnings: 0
+file: hdl/indexMatrix.sv
+	module worklib.indexMatrix:sv
+		errors: 0, warnings: 0
+file: test/tb.sv
+	module worklib.tb:sv
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		tb
+	Building instance overlay tables: 
+    initial $readmemh("simulation/Kernel.txt",Kernel);
+                                                   |
+xmelab: *W,MEMODR (./hdl/conv.sv,20|51): $readmem default memory order incompatible with IEEE1364.
+.
+    $readmemh("simulation/I.txt",inpMatrixI);
+                                          |
+xmelab: *W,MEMODR (./test/tb.sv,19|42): $readmem default memory order incompatible with IEEE1364.
+    $readmemh("simulation/Kernel.txt",inpMatrixIdinKer);
+                                                     |
+xmelab: *W,MEMODR (./test/tb.sv,20|53): $readmem default memory order incompatible with IEEE1364.
+................... Done
+	Generating native compiled code:
+		worklib.indexMatrix:sv <0x551c9b59>
+			streams:   0, words:     0
+		worklib.indexMatrix:sv <0x4fe686de>
+			streams:   5, words:  2325
+		worklib.sum:sv <0x1a9fe78a>
+			streams:   1, words:   173
+		worklib.mulp:sv <0x0a4fdc93>
+			streams:   1, words:   173
+		worklib.tb:sv <0x3f8e91ca>
+			streams:   6, words:  4161
+		worklib.conv2:sv <0x25cb4c4e>
+			streams:  14, words: 64941
+		worklib.conv:sv <0x15385851>
+			streams:  13, words:  4085
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:             18436       6
+		Registers:           23595      49
+		Scalar wires:            6       -
+		Vectored wires:      95240       -
+		Always blocks:           4       3
+		Initial blocks:       1027       4
+		Cont. assignments:   22528       5
+		Pseudo assignments:  54279       -
+		Process Clocks:          2       1
+	Writing initial simulation snapshot: worklib.tb:sv
+Loading snapshot worklib.tb:sv .................... Done
+xcelium> source /Tools/cadence/XCELIUM2309/tools/xcelium/files/xmsimrc
+xcelium> run
+Tempo de exerc 276.00ns OK... 
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun(64)	23.09-s003: Exiting on May 01, 2025 at 23:35:47 -03  (total: 00:00:06)
