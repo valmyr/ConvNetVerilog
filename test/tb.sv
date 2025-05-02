@@ -85,7 +85,8 @@ initial begin
         $display("\n");
     end
     $writememh("simulation/maxIxKernelPooling.txt",maxPoolingOut);
-    $display("%d ns OK..",timestop);
+    $display("Tempo de exerc %.2fns OK... ",timestop);
+
 
 end
 endmodule
