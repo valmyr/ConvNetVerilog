@@ -1,13 +1,13 @@
-module maxpooling#(parameter SIZEOUTCONV = 16, SIZEPOOLING = 2, WIDTH_BIT = 16)(
+module maxpooling#(parameter SIZE= 28,SIZEOUTCONV = 16, SIZEPOOLING = 2, WIDTH_BIT = 16)(
     input  logic clock                                                                                                ,
     input  logic nreset                                                                                               ,
     output  logic done                                                                                               ,
-    input  logic  signed               [WIDTH_BIT-1:0] convIxKernelOut [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0]                   ,
-    output logic  signed               [WIDTH_BIT-1:0] maxPoolingOut  [SIZEOUTCONV-SIZEPOOLING:0][SIZEOUTCONV-SIZEPOOLING:0]  
+    input  logic  signed               [WIDTH_BIT-1:0] convIxKernelOut [SIZE:0][SIZE:0]                   ,
+    output logic  signed               [WIDTH_BIT-1:0] maxPoolingOut  [SIZEOUTCONV:0][SIZEOUTCONV:0]  
 );
     logic [WIDTH_BIT-1:0] i, j, current, next;
     logic ena;
-    indexMatrix #(.SIZELin(SIZEOUTCONV - SIZEPOOLING +1),.SIZECol(SIZEOUTCONV - SIZEPOOLING +1),.WIDTH_BIT(WIDTH_BIT))indexadorMaxPooling(
+    indexMatrix #(.SIZELin(SIZEOUTCONV +1),.SIZECol(SIZEOUTCONV  +1),.WIDTH_BIT(WIDTH_BIT))indexadorMaxPooling(
         .clock  (clock      )       ,
         .nreset (nreset     )       ,
         .ena    (ena        )       ,
@@ -58,7 +58,7 @@ module maxpooling#(parameter SIZEOUTCONV = 16, SIZEPOOLING = 2, WIDTH_BIT = 16)(
                 end    
                 2:begin
                     maxPoolingOut[i][j] <= tempMax; 
-                    done <= i == SIZEOUTCONV-SIZEPOOLING && j == SIZEOUTCONV-SIZEPOOLING;
+                    done <= i == SIZEOUTCONV && j == SIZEOUTCONV;
                     ena <= 0;
                 end
             endcase

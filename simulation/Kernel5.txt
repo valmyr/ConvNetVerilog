@@ -1,0 +1,5 @@
+ffb0 1e fffd 7d 2c 
+ffbe 41 37 38 50 
+ffff fff6 4 28 27 
+ff7e 35 ffdc ff76 ff75 
+ffeb fffb ffcc ff96 ffd4 
