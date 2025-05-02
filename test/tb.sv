@@ -3,6 +3,7 @@ parameter SIZE =256, SIZEKer = 3, WIDTH_BIT = 16;
 parameter SIZEPOOLING = 2,SIZEOUTCONV = SIZE - SIZEPOOLING;
 
 logic clock, nreset1,nreset2,ena,done1, done2;
+real timestart, timestop;
 
 logic signed  [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0]                                      ;
 logic signed  [WIDTH_BIT-1:0] inpMatrixIdinKer    [SIZEKer-1:0][SIZEKer-1:0]                                ;
@@ -48,10 +49,11 @@ initial begin
     nreset1 = 0;
     nreset2 = 0;
     #1 nreset2 = 1;
+    timestart = $realtime();
     do begin 
         #1 clock = ~clock;
     end while(!done2);
-    
+    timestop= $realtime()-timestart;
     $writememh("simulation/IxKernel.txt",convIxKernelOut);
     clock =0;
     // #1 nreset2 = 0;
@@ -83,7 +85,7 @@ initial begin
         $display("\n");
     end
     $writememh("simulation/maxIxKernelPooling.txt",maxPoolingOut);
-
+    $display("%d ns OK..",timestop);
 
 end
 endmodule
