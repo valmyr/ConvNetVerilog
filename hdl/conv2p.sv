@@ -119,7 +119,7 @@ endgenerate
                         // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[1]] <= convIxKernel[3][1] >= 0  ? convIxKernel[3][1]: 0; //Relu+
                         // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[2]] <= convIxKernel[3][2] >= 0  ? convIxKernel[3][2]: 0; //Relu+
                         // convIxKernelOut[i+subdivisoes[3]][j+subdivisoes[3]] <= convIxKernel[3][3] >= 0  ? convIxKernel[3][3]: 0; //Relu+
-                done <= ii == SIZE/(TOTSUBIMAGEM)-SIZEKer && jj == SIZE/TOTSUBIMAGEM -SIZEKer;
+                done <= i == SIZE/(TOTSUBIMAGEM)-SIZEKer && j == SIZE/TOTSUBIMAGEM -SIZEKer;
                 ena <= 0;
              end
             endcase
