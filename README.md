@@ -3,6 +3,8 @@
 
 
 Links úteis:
+[Convolutional Neural Network | Deep Learning](https://developersbreach.com/convolution-neural-network-deep-learning/).
+
 [CNN EXPAINER](https://poloclub.github.io/cnn-explainer/#article-convolution).
 
 [Deep CNN-DESIGN](https://www.baeldung.com/cs/deep-cnn-design)
