@@ -1,0 +1,5 @@
+1b 22 fffa 2b c 
+ffe8 ffe6 16 16 4 
+ffe5 ffdd 1 c ffe6 
+ffd1 ffdf ffe7 1c ffea 
+9 c ffda fff4 ffcc 

@@ -4,25 +4,13 @@ parameter STEP_MAX_POOLING = 2;
 parameter SIZEINPUT_POOLING = SIZE - SIZEKer + 1;
 
 parameter SIZEPOOLING = 2,SIZEOUTCONV = (SIZEINPUT_POOLING - 2)/STEP_MAX_POOLING + 1;
+parameter FILTER_N1D = 8;
+parameter FILTER_N2D = 16;
 
 logic clock, nreset1,nreset2,ena;
-logic done0;
-logic done1;
-logic done2;
-logic done3;
-logic done4;
-logic done5;
-logic done6;
-logic done7;
+logic done0[FILTER_N1D-1:0];
+logic done0m[FILTER_N1D-1:0];
 
-logic done0m;
-logic done1m;
-logic done2m;
-logic done3m;
-logic done4m;
-logic done5m;
-logic done6m;
-logic done7m;
 real timestart, timestop;
 
 logic signed  [WIDTH_BIT-1:0] inpMatrixI          [SIZE-1:0][SIZE-1:0]                                      ;
@@ -33,191 +21,152 @@ logic signed  [WIDTH_BIT-1:0] convIxKernel                                      
 
 logic signed  [WIDTH_BIT-1:0] i, j, next,current;
 
-logic  signed  [WIDTH_BIT-1:0] Kernel0 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel1 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel2 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel3 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel4 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel5 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel6 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed  [WIDTH_BIT-1:0] Kernel7 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel0     [FILTER_N1D-1:0][SIZEKer-1:0][SIZEKer-1:0];
 
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut0[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut1[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut2[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut3[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut4[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut5[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut6[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
-logic signed  [WIDTH_BIT-1:0] convIxKernelOut7[SIZE-SIZEKer:0][SIZE-SIZEKer:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel00 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel01 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel02 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel03 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel04 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel05 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel06 [SIZEKer-1:0][SIZEKer-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel07 [SIZEKer-1:0][SIZEKer-1:0];
+logic signed  [WIDTH_BIT-1:0] convIxKernelOut0     [FILTER_N1D-1:0][SIZE-SIZEKer:0][SIZE-SIZEKer:0]     ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingOut0       [FILTER_N1D-1:0][SIZEOUTCONV-1:0][SIZEOUTCONV-1:0]   ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel0  [FILTER_N1D-1:0][SIZEOUTCONV-1:0][SIZEOUTCONV-1:0    ];
 
+generate
+    genvar iii;
+    for(iii = 0; iii < FILTER_N1D; iii++)begin:INST_CONVS1D
+        conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv0 (
+            .clock                  (clock                          )                               ,
+            .nreset                 (nreset1                        )                               ,
+            .inpMatrixI             (inpMatrixI                     )                               ,
+            .Kernel                 (Kernel0[iii]                     )                               ,
+            .done                   (done0[iii]                       )                               ,
+            .convIxKernelOut        (convIxKernelOut0[iii]            )
+        );
+    end
 
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut0       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut1       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut2       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut3       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut4       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut5       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut6       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
-logic signed  [WIDTH_BIT-1:0] maxPoolingOut7       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0 ]   ;
+        for(iii = 0; iii < FILTER_N1D; iii++)begin:INST_MAXPOOLING1D
+        maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling7 (
+            .clock                              (clock                  )                               ,
+            .nreset                             (nreset1                )                               ,
+            .convIxKernelOut                    (convIxKernelOut0[iii]     )                               ,
+            .done                               (done0m[iii]              )                               ,
+            .maxPoolingOut                      (maxPoolingOut0[iii]      )
+        );
+    end
+    endgenerate
 
+parameter SIZE2 =12, SIZEKer2 = 5;
+parameter STEP_MAX_POOLING2 = 2;
+parameter SIZEINPUT_POOLING2 = SIZE2 - SIZEKer2 + 1;
+parameter SIZEPOOLING2 = 2,SIZEOUTCONV2 = (SIZEINPUT_POOLING2 - 2)/STEP_MAX_POOLING2 + 1;
 
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel0  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel1  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel2  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel3  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel4  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel5  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel6  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
-logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel7  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0           ];
+logic done00[FILTER_N2D-1:0];
+logic done00m[FILTER_N2D-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernel_1_0 [FILTER_N2D-1:0][SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_00 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_01 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_02 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_03 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_04 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_05 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_06 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_07 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_08 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_09 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_10 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_11 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_12 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_13 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_14 [SIZEKer2-1:0][SIZEKer2-1:0];
+logic  signed  [WIDTH_BIT-1:0] Kernels2d_15 [SIZEKer2-1:0][SIZEKer2-1:0];
 
-
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv0 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel0                        )                               ,
-    .done                   (done0                          )                               ,
-    .convIxKernelOut        (convIxKernelOut0               )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv1 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel1                        )                               ,
-    .done                   (done1                          )                               ,
-    .convIxKernelOut        (convIxKernelOut1               )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv2 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel2                        )                               ,
-    .done                   (done2                          )                               ,
-    .convIxKernelOut        (convIxKernelOut2               )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv3 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel3                        )                               ,
-    .done                   (done3                          )                               ,
-    .convIxKernelOut        (convIxKernelOut3               )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv4 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel4                        )                               ,
-    .done                   (done4                          )                               ,
-    .convIxKernelOut        (convIxKernelOut4                )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv5 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel5                        )                               ,
-    .done                   (done5                          )                               ,
-    .convIxKernelOut        (convIxKernelOut5                )
-);
-
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv6 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel6                        )                               ,
-    .done                   (done6                          )                               ,
-    .convIxKernelOut        (convIxKernelOut6                )
-);
+logic signed  [WIDTH_BIT-1:0] convIxKernelOut_1_0     [FILTER_N2D-1:0][SIZE2-SIZEKer2:0][SIZE2-SIZEKer2:0]     ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingOut_1_0       [FILTER_N2D-1:0][SIZEOUTCONV2-1:0][SIZEOUTCONV2-1:0]   ;
+logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel_1_0  [FILTER_N2D-1:0][SIZEOUTCONV2-1:0][SIZEOUTCONV2-1:0    ];
 
 
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv7 (
-    .clock                  (clock                          )                               ,
-    .nreset                 (nreset1                        )                               ,
-    .inpMatrixI             (inpMatrixI                     )                               ,
-    .Kernel                 (Kernel7                        )                               ,
-    .done                   (done7                          )                               ,
-    .convIxKernelOut        (convIxKernelOut7                )
-);
+generate
+    genvar jj;
+    for(jj = 0; jj < FILTER_N2D; jj++)begin:INST_CONVS2D
+        conv2 #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
+            .clock                  (clock                          )                               ,
+            .nreset                 (nreset1                        )                               ,
+            .inpMatrixI             (maxPoolingOut0[0]                    )                               ,
+            .Kernel                 (Kernel_1_0[jj]                     )                               ,
+            .done                   (done00[jj]                       )                               ,
+            .convIxKernelOut        (convIxKernelOut_1_0[jj]            )
+        );
+    end
 
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling0 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut0    )                               ,
-    .done                               (done0m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut0      )
-);
+        for(jj = 0; jj < FILTER_N2D; jj++)begin:INST_MAXPOOLING2D
+        maxpooling #(.SIZE(SIZE2-SIZEKer2),.STEP_MAX_POOLING(STEP_MAX_POOLING2),.SIZEOUTCONV(SIZEOUTCONV2),.SIZEPOOLING(SIZEPOOLING2),.WIDTH_BIT(WIDTH_BIT)) maxPooling0 (
+            .clock                              (clock                  )                               ,
+            .nreset                             (nreset1                )                               ,
+            .convIxKernelOut                    (convIxKernelOut_1_0[jj]     )                               ,
+            .done                               (done00m[jj]              )                               ,
+            .maxPoolingOut                      (maxPoolingOut_1_0[jj]      )
+        );
+    end
+endgenerate
+assign Kernel0[0] = Kernel00;
+assign Kernel0[1] = Kernel01;
+assign Kernel0[2] = Kernel02;
+assign Kernel0[3] = Kernel03;
+assign Kernel0[4] = Kernel04;
+assign Kernel0[5] = Kernel05;
+assign Kernel0[6] = Kernel06;
+assign Kernel0[7] = Kernel07;
 
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling1 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut1    )                               ,
-    .done                               (done1m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut1      )
-);
-
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling2 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut2    )                               ,
-    .done                               (done2m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut2      )
-);
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling3 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut3    )                               ,
-    .done                               (done3m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut3      )
-);
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling4 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut4    )                               ,
-    .done                               (done4m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut4      )
-);
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling5 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut5    )                               ,
-    .done                               (done5m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut5      )
-);
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling6 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut6    )                               ,
-    .done                               (done6m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut6      )
-);
-maxpooling #(.SIZE(SIZE-SIZEKer),.STEP_MAX_POOLING(STEP_MAX_POOLING),.SIZEOUTCONV(SIZEOUTCONV),.SIZEPOOLING(SIZEPOOLING),.WIDTH_BIT(WIDTH_BIT)) maxPooling7 (
-    .clock                              (clock              )                               ,
-    .nreset                             (nreset1            )                               ,
-    .convIxKernelOut                    (convIxKernelOut7    )                               ,
-    .done                               (done7m             )                               ,
-    .maxPoolingOut                      (maxPoolingOut7      )
-);
-
+assign Kernel_1_0[0]  = Kernels2d_00;
+assign Kernel_1_0[1]  = Kernels2d_01;
+assign Kernel_1_0[2]  = Kernels2d_02;
+assign Kernel_1_0[3]  = Kernels2d_03;
+assign Kernel_1_0[4]  = Kernels2d_04;
+assign Kernel_1_0[5]  = Kernels2d_05;
+assign Kernel_1_0[6]  = Kernels2d_06;
+assign Kernel_1_0[7]  = Kernels2d_07;
+assign Kernel_1_0[8]  = Kernels2d_08;
+assign Kernel_1_0[9]  = Kernels2d_09;
+assign Kernel_1_0[10] = Kernels2d_10;
+assign Kernel_1_0[11] = Kernels2d_11;
+assign Kernel_1_0[12] = Kernels2d_12;
+assign Kernel_1_0[13] = Kernels2d_13;
+assign Kernel_1_0[14] = Kernels2d_14;
+assign Kernel_1_0[15] = Kernels2d_15;
 
 initial begin
     $readmemh("simulation/I.txt",inpMatrixI);
-    $readmemh("simulation/Kernel0.txt",inpMatrixIdinKer);
-    $readmemh("simulation/Kernel1.txt",Kernel0);
-    $readmemh("simulation/Kernel2.txt",Kernel1);
-    $readmemh("simulation/Kernel2.txt",Kernel2);
-    $readmemh("simulation/Kernel3.txt",Kernel3);
-    $readmemh("simulation/Kernel4.txt",Kernel4);
-    $readmemh("simulation/Kernel5.txt",Kernel5);
-    $readmemh("simulation/Kernel6.txt",Kernel6);
-    $readmemh("simulation/Kernel7.txt",Kernel7);
+    // $readmemh("simulation/Kernel0.txt",inpMatrixIdinKer);
+    $readmemh("simulation/Kernel0.txt",Kernel00);
+    $readmemh("simulation/Kernel1.txt",Kernel01);
+    $readmemh("simulation/Kernel2.txt",Kernel02);
+    $readmemh("simulation/Kernel3.txt",Kernel03);
+    $readmemh("simulation/Kernel4.txt",Kernel04);
+    $readmemh("simulation/Kernel5.txt",Kernel05);
+    $readmemh("simulation/Kernel6.txt",Kernel06);
+    $readmemh("simulation/Kernel7.txt",Kernel07);
 
+    $readmemh("simulation/Kernels2d_1_0.txt",Kernels2d_00);
+    $readmemh("simulation/Kernels2d_1_1.txt",Kernels2d_01);
+    $readmemh("simulation/Kernels2d_1_2.txt",Kernels2d_02);
+    $readmemh("simulation/Kernels2d_1_3.txt",Kernels2d_03);
+    $readmemh("simulation/Kernels2d_1_4.txt",Kernels2d_04);
+    $readmemh("simulation/Kernels2d_1_5.txt",Kernels2d_05);
+    $readmemh("simulation/Kernels2d_1_6.txt",Kernels2d_06);
+    $readmemh("simulation/Kernels2d_1_7.txt",Kernels2d_07);
+    $readmemh("simulation/Kernels2d_1_8.txt",Kernels2d_08);
+    $readmemh("simulation/Kernels2d_1_9.txt",Kernels2d_09);
+    $readmemh("simulation/Kernels2d_1_10.txt",Kernels2d_10);
+    $readmemh("simulation/Kernels2d_1_11.txt",Kernels2d_11);
+    $readmemh("simulation/Kernels2d_1_12.txt",Kernels2d_12);
+    $readmemh("simulation/Kernels2d_1_13.txt",Kernels2d_13);
+    $readmemh("simulation/Kernels2d_1_14.txt",Kernels2d_14);
+    $readmemh("simulation/Kernels2d_1_15.txt",Kernels2d_15);
+    
     $display("Matriz de Entrada>> \n");
     for(integer i = 0; i < SIZE; i++)begin
         for(integer j = 0; j < SIZE; j++)begin
@@ -235,16 +184,16 @@ initial begin
     timestart = $realtime();
     do begin 
         #1 clock = ~clock;
-    end while(!done0);
+    end while(!done0[0]);
     timestop= $realtime()-timestart;
-    $writememh("simulation/IxKernel.txt",convIxKernelOut0);
+    $writememh("simulation/IxKernel.txt",convIxKernelOut0[0]);
     clock =0;
     // #1 nreset2 = 0;
     #1 nreset2 = 1;
 
     do begin 
         #1 clock = ~clock;
-    end while(!done0m);
+    end while(!done0m[0]);
     $display("Kernel>> \n");
     for(integer i = 0; i < SIZEKer; i++)begin
         for(integer j = 0; j < SIZEKer; j++)begin
@@ -253,84 +202,30 @@ initial begin
         $display("\n");
     end
     $display("Matriz de Convoluída>> \n");
-    $writememh("simulation/IxKernel.txt",convIxKernelOut0);
+    $writememh("simulation/IxKernel.txt",convIxKernelOut0[0]);
     for(integer i = 0; i < SIZE-SIZEKer+1; i++)begin
         for(integer j = 0; j < SIZE-SIZEKer+1; j++)begin
-            $write(convIxKernelOut0[i][j]);
+            $write(convIxKernelOut0[0][i][j]);
         end
         $display("\n");
     end
     $display("Matriz Maxpooling0>> \n");
     for(integer i = 0; i < SIZEOUTCONV; i++)begin
         for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut0[i][j]);
+            $write(maxPoolingOut0[0][i][j]);
         end
         $display("\n");
     end
-    $display("Matriz Maxpooling1>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut1[i][j]);
-        end
-        $display("\n");
-    end
-    $display("Matriz Maxpooling2>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut2[i][j]);
-        end
-        $display("\n");
-    end
-        $display("Matriz Maxpooling3>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut3[i][j]);
-        end
-        $display("\n");
-    end
-        $display("Matriz Maxpooling4>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut4[i][j]);
-        end
-        $display("\n");
-    end
-        $display("Matriz Maxpooling5>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut4[i][j]);
-        end
-        $display("\n");
-    end
-            $display("Matriz Maxpooling5>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut4[i][j]);
-        end
-        $display("\n");
-    end
-            $display("Matriz Maxpooling6>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut4[i][j]);
-        end
-        $display("\n");
-    end
-            $display("Matriz Maxpooling7>> \n");
-    for(integer i = 0; i < SIZEOUTCONV; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV ; j++)begin
-            $write(maxPoolingOut4[i][j]);
-        end
-        $display("\n");
-    end
-    $writememh("simulation/maxIxKernelPooling0.txt",maxPoolingOut0);
-    $writememh("simulation/maxIxKernelPooling1.txt",maxPoolingOut1);
-    $writememh("simulation/maxIxKernelPooling2.txt",maxPoolingOut2);
-    $writememh("simulation/maxIxKernelPooling3.txt",maxPoolingOut3);
-    $writememh("simulation/maxIxKernelPooling4.txt",maxPoolingOut4);
-    $writememh("simulation/maxIxKernelPooling5.txt",maxPoolingOut5);
-    $writememh("simulation/maxIxKernelPooling6.txt",maxPoolingOut6);
-    $writememh("simulation/maxIxKernelPooling7.txt",maxPoolingOut7);
+
+
+    $writememh("simulation/maxIxKernelPooling0.txt",maxPoolingOut0[0]);
+    $writememh("simulation/maxIxKernelPooling1.txt",maxPoolingOut0[1]);
+    $writememh("simulation/maxIxKernelPooling2.txt",maxPoolingOut0[2]);
+    $writememh("simulation/maxIxKernelPooling3.txt",maxPoolingOut0[3]);
+    $writememh("simulation/maxIxKernelPooling4.txt",maxPoolingOut0[4]);
+    $writememh("simulation/maxIxKernelPooling5.txt",maxPoolingOut0[5]);
+    $writememh("simulation/maxIxKernelPooling6.txt",maxPoolingOut0[6]);
+    $writememh("simulation/maxIxKernelPooling7.txt",maxPoolingOut0[7]);
 
     $display("Tempo de exerc %.2fns OK... ",timestop);
 
