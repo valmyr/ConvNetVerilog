@@ -1,5 +1,0 @@
-1d ffe8 1b 28 ffe7 
-3 1e 0 ffff ffe6 
-fffe 11 1a c fffa 
-ffb0 ffe8 1a ffe7 ffcb 
-ffd7 ffdb ffe1 ffbe ffe0 

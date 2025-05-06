@@ -1,5 +1,0 @@
-15 10 1e c fffb 
-ffff ffcf fffa d ffe3 
-ffca ffa8 ff97 ffe1 ffe5 
-0 e 9 f fff9 
-1a fffe 2d 3 1a 

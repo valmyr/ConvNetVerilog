@@ -89,3 +89,26 @@ m1 = m[0:4][0:4]
 6 7 8 9 9 8 7 6
 6 7 8 9 9 8 7 6
 6 7 8 9 9 8 7 6
+
+
+
+1. Fundamentos de Hardware Digital
+Lógica Digital Avançada:
+
+Minimização de circuitos (mapas de Karnaugh, álgebra Booleana)
+
+Arquiteturas de somadores (ripple-carry, carry-lookahead)
+
+Multiplicadores binários (Booth, Wallace Tree)
+
+Temporização em Hardware:
+
+Setup/hold time, slack negativo, metaestabilidade
+
+Técnicas de crossing clock domain (FIFOs, handshake, pulsers)
+
+Arquiteturas de Baixo Nível:
+
+FSMs otimizadas (Moore vs. Mealy, one-hot encoding)
+
+Pipeline de dados (hazards, forwarding, stalls)

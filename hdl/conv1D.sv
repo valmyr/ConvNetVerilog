@@ -4,7 +4,8 @@ module conv2#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
     input logic  signed  [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]                ,
     output logic                    done                                                    ,
     output logic  signed  [WIDTH_BIT-1:0]    convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0],
-        input   logic  signed  [WIDTH_BIT-1:0] Kernel [SIZEKer-1:0][SIZEKer-1:0]
+        input   logic  signed  [WIDTH_BIT-1:0] Kernel [SIZEKer-1:0][SIZEKer-1:0],
+            input logic signed    [WIDTH_BIT-1:0]    bias 
 );
 
 logic ena;
@@ -52,7 +53,7 @@ logic [WIDTH_BIT-1:0] i, j, next,current;
                 done<= 0;
              end
              2:begin 
-                convIxKernelOut[i][j] <= convIxKernel >= 0  ? convIxKernel/2: 0; //Relu+
+                convIxKernelOut[i][j] <= convIxKernel +bias>= 0  ? convIxKernel+bias: 0; //Relu+
                 done <= i == SIZE-SIZEKer && j == SIZE-SIZEKer;
                 ena <= 0;
              end
