@@ -105,6 +105,7 @@ logic signed  [WIDTH_BIT-1:0]bias2_2;
 logic signed  [WIDTH_BIT-1:0]bias3_2;
 
 logic signed  [WIDTH_BIT-1:0]bias2 [FILTER_N2D-1:0];
+logic signed  [WIDTH_BIT-1:0]biasdense [10-1:0];
 
 assign bias0_2 = bias2[0];
 assign bias1_2 = bias2[1];
@@ -236,6 +237,7 @@ initial begin
     $readmemh("simulation/I.txt",inpMatrixI);
     $readmemh("simulation/bias0.txt",bias);
     $readmemh("simulation/bias2.txt",bias2);
+    $readmemh("simulation/bias5.txt",biasdense);
     // $readmemh("simulation/bias1.txt",bias1);
     $readmemh("simulation/Kernel00.txt",Kernel00);
     $readmemh("simulation/Kernel01.txt",Kernel01);
@@ -284,6 +286,11 @@ initial begin
     nreset2 = 0;
     nreset3 = 1;
     nreset4 = 0;
+
+    
+    $writememh("simulation/maxpooling0.txt",maxPoolingOut0);
+    $writememh("simulation/maxpooling1.txt",maxPoolingOut1);
+
     do begin 
         #1 clock = ~clock;
     end while(!done10);
@@ -295,7 +302,12 @@ initial begin
     do begin 
         #1 clock = ~clock;
     end while(!done10m);
-
+    
+    $writememh("simulation/maxpoolingF1.txt",maxPoolingOutF1);
+    $writememh("simulation/maxpoolingF2.txt",maxPoolingOutF2);
+    $writememh("simulation/maxpoolingF3.txt",maxPoolingOutF3);
+    $writememh("simulation/maxpoolingF4.txt",maxPoolingOutF4);
+    $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
     $display("Matriz Maxpooling0>> \n");
     mmm =0;
     for(integer i = 0; i < SIZEOUTCONV2; i++)begin
@@ -305,21 +317,23 @@ initial begin
             flatten[mmm+25]=maxPoolingOutF2[i][j];
             flatten[mmm+50]=maxPoolingOutF3[i][j];
             flatten[mmm+75]=maxPoolingOutF4[i][j];
-            $write(maxPoolingOutF4[i][j]);
+            $write(maxPoolingOutF3[i][j]);
             mmm+=1;
         end
         $display("\n");
     end
-    
+    for(integer k = 0;k < 100; k++)begin
+        $display(flatten[k]);
+    end
+    $writememh("simulation/flatten.txt",flatten);
     for(integer i = 0; i < 10; i++)begin
         sum = 0;
-       for(integer j = 0; j < 100; j++)begin
           for(integer k = 0;k < 100; k++)begin
-            sum+=flatten[k]*dense[j][i];
+            sum+=flatten[k]*dense[k][i]+biasdense[i];
           end
-       end
-       denseout[i] = sum > 0? sum : 0;
-       $display(i,sum);
+       denseout[i] = sum ;
+       $display((sum));
+
     end
     $writememh("simulation/dense.txt",denseout);
 
