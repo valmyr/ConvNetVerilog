@@ -1,6 +1,6 @@
 
 module tb;
-parameter SIZE =28, SIZEKer = 5, WIDTH_BIT = 128;
+parameter SIZE =28, SIZEKer = 5, WIDTH_BIT = 16;
 parameter STEP_MAX_POOLING = 2;
 parameter SIZEINPUT_POOLING = SIZE - SIZEKer + 1;
     integer mmm;
@@ -326,6 +326,8 @@ initial begin
         $display(flatten[k]);
     end
     $writememh("simulation/flatten.txt",flatten);
+    $display("\n");
+
     for(integer i = 0; i < 10; i++)begin
         sum = 0;
           for(integer k = 0;k < 100; k++)begin
@@ -335,6 +337,7 @@ initial begin
        $display((sum));
 
     end
+    $display("\n");
     $writememh("simulation/dense.txt",denseout);
 
 end
