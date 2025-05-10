@@ -1,10 +1,12 @@
 
 module tb;
-parameter SIZE =28, SIZEKer = 5, WIDTH_BIT = 16;
+parameter SIZE =28, SIZEKer = 5, WIDTH_BIT = 128;
 parameter STEP_MAX_POOLING = 2;
 parameter SIZEINPUT_POOLING = SIZE - SIZEKer + 1;
     integer mmm;
-    integer sum;
+    // integer sum;
+logic signed [WIDTH_BIT-1:0]sum;
+
 parameter SIZEPOOLING = 2,SIZEOUTCONV = (SIZEINPUT_POOLING - 2)/STEP_MAX_POOLING + 1;
 parameter FILTER_N1D = 2;
 parameter FILTER_N2D = 8;
@@ -32,7 +34,7 @@ logic signed  [WIDTH_BIT-1:0] maxPoolingOut0       [SIZEOUTCONV-1:0][SIZEOUTCONV
 logic signed  [WIDTH_BIT-1:0] maxPoolingOut1       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0]   ;
 logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel0  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0    ];
 logic signed  [WIDTH_BIT-1:0] maxPoolingIxKernel1  [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0    ];
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv0 (
+conv1D #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv0 (
             .clock                  (clock                              )                               ,
             .nreset                 (nreset1                            )                               ,
             .inpMatrixI             (inpMatrixI                         )                               ,
@@ -41,7 +43,7 @@ conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv0 (
             .bias                   (bias0                              )                                ,
             .convIxKernelOut    (convIxKernelOut0                   )
 );
-conv2 #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv2 (
+conv1D #(.SIZE(SIZE),.SIZEKer(SIZEKer),.WIDTH_BIT(WIDTH_BIT)) conv2 (
             .clock                  (clock                              )                               ,
             .nreset                 (nreset1                            )                               ,
             .inpMatrixI             (inpMatrixI                         )                               ,
@@ -113,8 +115,8 @@ assign bias2_2 = bias2[2];
 assign bias3_2 = bias2[3];
 
 
-logic[WIDTH_BIT-1:0] flatten [100-1:0];
-logic[WIDTH_BIT-1:0] denseout [10-1:0];
+logic signed [WIDTH_BIT-1:0] flatten [100-1:0];
+logic signed [WIDTH_BIT-1:0] denseout [10-1:0];
 conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
             .clock                           (clock                          )                               ,
             .nreset                          (nreset3                        )                               ,
@@ -123,7 +125,7 @@ conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
             .Kernel1                         (Kernels2d_01                   )                               ,
             .Kernel2                         (Kernels2d_11                   )                               ,
             .done                            (done10                         )                               ,
-            .convIxKernelOut        (convIxKernelOut_F01            ),
+            .convIxKernelOut                 (convIxKernelOut_F01            ),
             .bias(bias0_2)
 );
 
@@ -135,7 +137,7 @@ conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv01 (
             .Kernel1                         (Kernels2d_02                   )                               ,
             .Kernel2                         (Kernels2d_12                   )                               ,
             .done                            (                               )                               ,
-            .convIxKernelOut        (convIxKernelOut_F02            ),
+            .convIxKernelOut                 (convIxKernelOut_F02            ),
             .bias(bias1_2)
 );
 
@@ -147,7 +149,7 @@ conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv02 (
             .Kernel1                         (Kernels2d_03                   )                               ,
             .Kernel2                         (Kernels2d_13                   )                               ,
             .done                            (                               )                               ,
-            .convIxKernelOut        (convIxKernelOut_F03            ),
+            .convIxKernelOut                 (convIxKernelOut_F03            ),
             .bias(bias2_2)
 );
 
@@ -159,7 +161,7 @@ conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv03 (
             .Kernel1                         (Kernels2d_04                   )                               ,
             .Kernel2                         (Kernels2d_14                   )                               ,
             .done                            (                               )                               ,
-            .convIxKernelOut        (convIxKernelOut_F04            ),
+            .convIxKernelOut                 (convIxKernelOut_F04            ),
             .bias(bias3_2)
 );
 
@@ -244,14 +246,17 @@ initial begin
 
 
     $readmemh("simulation/danse.txt00.txt",dense);
-    $readmemh("simulation/kernels2d_0_00.txt",Kernels2d_01);
-    $readmemh("simulation/kernels2d_0_01.txt",Kernels2d_02);
-    $readmemh("simulation/kernels2d_0_02.txt",Kernels2d_03);
-    $readmemh("simulation/kernels2d_0_03.txt",Kernels2d_04);
-    $readmemh("simulation/kernels2d_1_10.txt",Kernels2d_11);
-    $readmemh("simulation/kernels2d_1_11.txt",Kernels2d_12);
-    $readmemh("simulation/kernels2d_1_12.txt",Kernels2d_13);
-    $readmemh("simulation/kernels2d_1_13.txt",Kernels2d_14);
+
+    $readmemh("simulation/kernels2d_00.txt",Kernels2d_01);
+    $readmemh("simulation/kernels2d_01.txt",Kernels2d_02);
+    $readmemh("simulation/kernels2d_02.txt",Kernels2d_03);
+    $readmemh("simulation/kernels2d_03.txt",Kernels2d_04);
+
+
+    $readmemh("simulation/kernels2d_10.txt",Kernels2d_11);
+    $readmemh("simulation/kernels2d_11.txt",Kernels2d_12);
+    $readmemh("simulation/kernels2d_12.txt",Kernels2d_13);
+    $readmemh("simulation/kernels2d_13.txt",Kernels2d_14);
 
     
     // $display("Matriz de Entrada>> \n");
@@ -294,6 +299,10 @@ initial begin
     do begin 
         #1 clock = ~clock;
     end while(!done10);
+    $writememh("simulation/convIxKernelOut_F01.txt",convIxKernelOut_F01);
+    $writememh("simulation/convIxKernelOut_F02.txt",convIxKernelOut_F02);
+    $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
+    $writememh("simulation/convIxKernelOut_F04.txt",convIxKernelOut_F04);
 
     nreset1 = 0;
     nreset2 = 0;
@@ -327,6 +336,7 @@ initial begin
     end
     $writememh("simulation/flatten.txt",flatten);
     $display("\n");
+    $display("[");
 
     for(integer i = 0; i < 10; i++)begin
         sum = 0;
@@ -334,11 +344,41 @@ initial begin
             sum+=flatten[k]*dense[k][i]+biasdense[i];
           end
        denseout[i] = sum ;
-       $display((sum));
+       $display(sum,",");
+    //    $display(i,(sum >=0?sum:0));
 
     end
+    $display("]");
     $display("\n");
-    $writememh("simulation/dense.txt",denseout);
+    // $writememh("simulation/dense.txt",denseout);
+    //         $display("Matriz de Entrada>> \n");
+    // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
+    //     for(integer j = 0; j <SIZEINPUT_POOLING2; j++)begin
+    //         $write("    ",maxPoolingOut0[i][j]);
+    //     end
+    //     $display("\n");
+    // end
+    //     for(integer i = 0; i < SIZEKer2; i++)begin
+    //     for(integer j = 0; j < SIZEKer2; j++)begin
+    //         $write(Kernels2d_01[i][j]);
+    //     end
+    //     $display("\n");
+    // end
+    
+    //    for(integer i = 0; i < SIZEKer2; i++)begin
+    //     for(integer j = 0; j < SIZEKer2; j++)begin
+    //         $write(Kernels2d_11[i][j]);
+    //     end
+    //     $display("\n");
+    // end
 
+
+    //         $display("Matriz de Entrada>> \n");
+    // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
+    //     for(integer j = 0; j <SIZEINPUT_POOLING2; j++)begin
+    //         $write("    ",convIxKernelOut_F01[i][j]);
+    //     end
+    //     $display("\n");
+    // end
 end
 endmodule

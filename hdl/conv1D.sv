@@ -1,11 +1,11 @@
-module conv2#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
+module conv1D#(parameter SIZE =7, SIZEKer = 3, WIDTH_BIT = 8)(
     input  logic                      clock                                                   ,
-    input logic                     nreset                                                  ,
-    input logic  signed  [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]                ,
+    input  logic                     nreset                                                  ,
+    input  logic  signed  [WIDTH_BIT-1:0]     inpMatrixI          [SIZE-1:0][SIZE-1:0]                ,
     output logic                    done                                                    ,
     output logic  signed  [WIDTH_BIT-1:0]    convIxKernelOut [(SIZE-SIZEKer):0][(SIZE-SIZEKer):0],
-        input   logic  signed  [WIDTH_BIT-1:0] Kernel [SIZEKer-1:0][SIZEKer-1:0],
-            input logic signed    [WIDTH_BIT-1:0]    bias 
+    input  logic  signed  [WIDTH_BIT-1:0] Kernel [SIZEKer-1:0][SIZEKer-1:0],
+    input  logic  signed    [WIDTH_BIT-1:0]    bias 
 );
 
 logic ena;
@@ -14,7 +14,7 @@ logic  signed [WIDTH_BIT-1:0] convIxKernel ;
 logic [WIDTH_BIT-1:0] i, j, next,current;
 
 
-    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN1(
+    conv #(.SIZE(SIZEKer),.WIDTH_BIT(WIDTH_BIT))CNN1__(
         .clock(clock)                          ,
         .nreset(nreset)                        ,
         .inpMatrixI(inpMatrixIdinKer)          ,
