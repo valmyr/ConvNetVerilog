@@ -369,7 +369,7 @@ initial begin
 
 
 
-    // $writememh("simulation/dense.txt",denseout);
+    $writememh("simulation/dense.txt",denseout);
     //         $display("Matriz de Entrada>> \n");
     // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
     //     for(integer j = 0; j <SIZEINPUT_POOLING2; j++)begin
