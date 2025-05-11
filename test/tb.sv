@@ -291,8 +291,10 @@ initial begin
     nreset2 = 0;
     nreset3 = 1;
     nreset4 = 0;
-
+// convIxKernelOut1 
     
+    $writememh("simulation/convIxKernelOut0.txt",convIxKernelOut0);
+    $writememh("simulation/convIxKernelOut1.txt",convIxKernelOut1);
     $writememh("simulation/maxpooling0.txt",maxPoolingOut0);
     $writememh("simulation/maxpooling1.txt",maxPoolingOut1);
 
@@ -342,10 +344,12 @@ initial begin
         sum = 0;
           for(integer k = 0;k < 100; k++)begin
             sum+=flatten[k]*dense[k][i]+biasdense[i];
+            $display(flatten[k],dense[k][i],biasdense[i],sum,",");
+
           end
        denseout[i] = sum ;
-       $display(sum,",");
-    //    $display(i,(sum >=0?sum:0));
+    //    $display(flatten[k],dense[k][i],biasdense[i],sum,",");
+       $display(i,(sum >=0?sum:0));
 
     end
     $display("]");
