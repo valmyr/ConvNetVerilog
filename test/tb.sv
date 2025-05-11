@@ -116,6 +116,11 @@ assign bias3_2 = bias2[3];
 
 
 logic signed [WIDTH_BIT-1:0] flatten [100-1:0];
+logic signed [WIDTH_BIT-1:0] flatten0 [25-1:0];
+logic signed [WIDTH_BIT-1:0] flatten1 [25-1:0];
+logic signed [WIDTH_BIT-1:0] flatten2 [25-1:0];
+logic signed [WIDTH_BIT-1:0] flatten3 [25-1:0];
+
 logic signed [WIDTH_BIT-1:0] denseout [10-1:0];
 conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
             .clock                           (clock                          )                               ,
@@ -324,17 +329,27 @@ initial begin
     for(integer i = 0; i < SIZEOUTCONV2; i++)begin
         for(integer j = 0; j < SIZEOUTCONV2 ; j++)begin
 
-            flatten[mmm+00]=maxPoolingOutF1[i][j];
-            flatten[mmm+25]=maxPoolingOutF2[i][j];
-            flatten[mmm+50]=maxPoolingOutF3[i][j];
-            flatten[mmm+75]=maxPoolingOutF4[i][j];
-            $write(maxPoolingOutF3[i][j]);
+            flatten0[mmm]=maxPoolingOutF1[i][j];
+            flatten1[mmm]=maxPoolingOutF2[i][j];
+            flatten2[mmm]=maxPoolingOutF3[i][j];
+            flatten3[mmm]=maxPoolingOutF4[i][j];
             mmm+=1;
         end
         $display("\n");
     end
+    $display(mmm);
+    
+    mmm = 0;
+    for(integer i =0; i < 25; i++)begin
+
+        flatten[mmm+0] = flatten0[i];
+        flatten[mmm+1] = flatten1[i];
+        flatten[mmm+2] = flatten2[i];
+        flatten[mmm+3] = flatten3[i];
+        mmm+=4;
+    end
     for(integer k = 0;k < 100; k++)begin
-        $display(flatten[k]);
+        $display(k,flatten[k]);
     end
     $writememh("simulation/flatten.txt",flatten);
     $display("\n");
@@ -344,16 +359,16 @@ initial begin
         sum = 0;
           for(integer k = 0;k < 100; k++)begin
             sum+=flatten[k]*dense[k][i]+biasdense[i];
-            $display(flatten[k],dense[k][i],biasdense[i],sum,",");
-
           end
        denseout[i] = sum ;
-    //    $display(flatten[k],dense[k][i],biasdense[i],sum,",");
-       $display(i,(sum >=0?sum:0));
+       $display(i,sum);
 
     end
     $display("]");
     $display("\n");
+
+
+
     // $writememh("simulation/dense.txt",denseout);
     //         $display("Matriz de Entrada>> \n");
     // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
