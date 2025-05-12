@@ -1,3 +1,13 @@
+## Diagrama de blocos da Rede Convolucional 
+<p align="center">
+<img title="Rede Convolucional Diagrama" alt="Alt text" src="images/diagrama_rede_convolucional.png">
+</p>
+
+## Diagrama de blocos do SystemVerilog da Rede Convolucional 
+<p align="center">
+<img title="Rede Convolucional Diagrama de Blocos" alt="Alt text" src="images/diagrama_de_blocos.png">
+</p>
+
 ## Exemplo de convolução matricial
 <img title="Exemplo de convolução matricial" alt="Alt text" src="images/conv.png">
 
