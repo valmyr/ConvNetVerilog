@@ -43,10 +43,10 @@ a vários objetos na imagem e ser capaz de distingui-los.
 
 ## layer 4 - MAXPOOLING 2
 <p align="center">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="20%" height="25%">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer4.png" width="20%" height="25%">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling2_layer4.png" width="20%" height="25%">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling3_layer4.png" width="20%" height="25%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="20%" height="20%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer4.png" width="20%" height="20%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling2_layer4.png" width="20%" height="20%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling3_layer4.png" width="20%" height="20%">
 </p>
 
 ## layer 5 - FLATTEN
@@ -85,11 +85,3 @@ Links úteis:
 [Verilog Project Ideias](https://vlsiverify.com/verilog/verilog-project-ideas/)
 
 [The Convolutional Filter](https://medium.com/advanced-deep-learning/cnn-operation-with-2-kernels-resulting-in-2-feature-mapsunderstanding-the-convolutional-filter-c4aad26cf32)
-
-
-
-<p align="center" width="100%">
-    <img width="32%" src="images/preprocessamento.jpg">
-    <img width="32%" src="images/posprocessamento.jpg">
-    <img width="32%" src="images/maxpoolingposprocessamento.jpg">
-</p>
