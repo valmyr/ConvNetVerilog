@@ -23,27 +23,35 @@ a vários objetos na imagem e ser capaz de distingui-los.
 
 ## layer 1 - CONVOLUÇÃO 1
 <p align="center">
-<img title="Mapa de Característico 0" alt="Alt text" src="images/conv1_layer0.png" width="50%" height="50%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv1_layer0.png" width="25%" height="25%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv1_layer1.png" width="25%" height="25%">
 </p>
 
 ## layer 2 - MAXPOOLING 1
 <p align="center">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer2.png" width="50%" height="50%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer2.png" width="25%" height="25%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer2.png" width="25%" height="25%">
 </p>
 
 ## layer 3 - CONVOLUÇÃO 2
 <p align="center">
-<img title="Mapa de Característico 0" alt="Alt text" src="images/conv0_layer3.png" width="100%" height="100%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv0_layer3.png" width="20%" height="20%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv1_layer3.png" width="20%" height="20%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv2_layer3.png" width="20%" height="20%">
+<img title="Mapa de Característico 0" alt="Alt text" src="images/conv3_layer3.png" width="20%" height="20%">
 </p>
 
 ## layer 4 - MAXPOOLING 2
 <p align="center">
-<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="100%" height="100%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="20%" height="25%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer4.png" width="20%" height="25%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling2_layer4.png" width="20%" height="25%">
+<img title="Mapa de Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling3_layer4.png" width="20%" height="25%">
 </p>
 
 ## layer 5 - FLATTEN
 <p align="center">
-<img title="ACHATAMENTO" alt="Alt text" src="images/flatten_layer5.png" width="200%" height="100%">
+<img title="ACHATAMENTO" alt="Alt text" src="images/flatten_layer5.png" width="100%" height="100%">
 </p>
 
 
