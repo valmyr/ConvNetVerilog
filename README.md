@@ -65,7 +65,9 @@ a vários objetos na imagem e ser capaz  distingui-los.
 <img title="Exemplo de convolução matricial" alt="Alt text" src="images/conv.png">
 </p>
 
-Links úteis:
+Referências
+
+[Topologia dda rede] (https://www.youtube.com/watch?v=jDe5BAsT2-Y&ab_channel=Erai)
 [Convolutional Neural Network | ep Learning](https://velopersbreach.com/convolution-neural-network-ep-learning/).
 
 [CNN EXPAINER](https://poloclub.github.io/cnn-explainer/#article-convolution).
