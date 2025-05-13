@@ -1,52 +1,52 @@
 ## Reconhecimento  dígitos manuscritos (HDR) usando re neural convolucional (CNN) em SystemVerilog
 
 O Reconhecimento  Dígitos Manuscritos é o processo  digitalização  imagens  dígitos manuscritos por humanos. É uma tarefa
-difícil para a máquina, pois os dígitos manuscritos não são perfeitos e pom ser produzidos com uma varieda  variações. Neste projeto, senvolvemos
-um molo  Re Neural Convolucional (CNN) utilizando o SystemVerilog para o Reconhecimento  Dígitos Manuscritos. Uma re neural convolucional
-(CNN ou ConvNet) é um algoritmo  Aprendizado Profundo que po receber uma imagem  entrada, atribuir pesos e vieses aprendíveis
+difícil para a máquina, pois os dígitos manuscritos não são perfeitos e podem ser produzidos com uma grande variabilidade. Neste projeto, desenvolvemos
+um molode Rede Neural Convolucional (CNN) utilizando o SystemVerilog para o Reconhecimento  Dígitos Manuscritos. Uma rede neural convolucional
+(CNN ou ConvNet) é um algoritmo  Aprendizado Profundo que pode receber uma imagem  entrada, atribuir pesos e vieses aprendíveis
 a vários objetos na imagem e ser capaz  distingui-los.
 
-## Layers da Re Convolucional 
+## Layers da Rede Convolucional 
 <p align="center">
-<img title="Re Convolucional Diagrama" alt="Alt text" src="images/diagrama_rede_convolucional.png">
+<img title="Rede Convolucional Diagrama" alt="Alt text" src="images/diagrama_rede_convolucional.png">
 </p>
 
-## Diagrama  blocos do SystemVerilog da Re Convolucional 
+## Diagrama de blocos do SystemVerilog da Rede Convolucional 
 <p align="center">
-<img title="Re Convolucional Diagrama  Blocos" alt="Alt text" src="images/diagrama_de_blocos.png">
+<img title="Rede Convolucional Diagrama  Blocos" alt="Alt text" src="images/diagrama_de_blocos.png">
 </p>
 
 ## Entrada
 <p align="center">
-<img title="Entrada da Re" alt="Alt text" src="images/input.png" width="50%" height="50%">
+<img title="Entrada da Rede" alt="Alt text" src="images/input.png" width="50%" height="50%">
 </p>
 
 ## layer 1 - CONVOLUÇÃO 1
 <p align="center">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv1_layer0.png" width="25%" height="25%">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv1_layer1.png" width="25%" height="25%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv1_layer0.png" width="25%" height="25%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv1_layer1.png" width="25%" height="25%">
 </p>
 
 ## layer 2 - MAXPOOLING 1
 <p align="center">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer2.png" width="25%" height="25%">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer2.png" width="25%" height="25%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer2.png" width="25%" height="25%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer2.png" width="25%" height="25%">
 </p>
 
 ## layer 3 - CONVOLUÇÃO 2
 <p align="center">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv0_layer3.png" width="20%" height="20%">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv1_layer3.png" width="20%" height="20%">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv2_layer3.png" width="20%" height="20%">
-<img title="Mapa  Característico 0" alt="Alt text" src="images/conv3_layer3.png" width="20%" height="20%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv0_layer3.png" width="20%" height="20%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv1_layer3.png" width="20%" height="20%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv2_layer3.png" width="20%" height="20%">
+<img title="Mapa Característico 0" alt="Alt text" src="images/conv3_layer3.png" width="20%" height="20%">
 </p>
 
 ## layer 4 - MAXPOOLING 2
 <p align="center">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="20%" height="20%">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer4.png" width="20%" height="20%">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling2_layer4.png" width="20%" height="20%">
-<img title="Mapa  Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling3_layer4.png" width="20%" height="20%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling0_layer4.png" width="20%" height="20%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling1_layer4.png" width="20%" height="20%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling2_layer4.png" width="20%" height="20%">
+<img title="Mapa Característico 0 - Maxpooling" alt="Alt text" src="images/maxpooling3_layer4.png" width="20%" height="20%">
 </p>
 
 ## layer 5 - FLATTEN
@@ -57,12 +57,12 @@ a vários objetos na imagem e ser capaz  distingui-los.
 
 ## layer 6 - NSE
 <p align="center">
-<img title="NSE" alt="Alt text" src="images/dense_layer6.png"  width="100%" height="100%">
+<img title="DENSE" alt="Alt text" src="images/dense_layer6.png"  width="100%" height="100%">
 </p>
 
 ## Exemplo  convolução matricial
 <p align="center">
-<img title="Exemplo  convolução matricial" alt="Alt text" src="images/conv.png">
+<img title="Exemplo de convolução matricial" alt="Alt text" src="images/conv.png">
 </p>
 
 Links úteis:
