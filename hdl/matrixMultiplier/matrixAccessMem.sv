@@ -14,6 +14,6 @@ module matrixAccessMem#(parameter AROWS = 3,ACOLUMNS = 3,BROWS = 3,BCOLUMNS = 3,
 
 logic signed [WIDTH_BIT-1:0] tmpMaxtrixA;
 logic signed [WIDTH_BIT-1:0] tmpMaxtrixB;
-assign  Aik = MatrixA[i][k];
-assign  Bkj = MatrixB[k][j];
+assign  Aik = ena ? MatrixA[i][k]: 0;
+assign  Bkj = ena ? MatrixB[k][j]: 0;
 endmodule

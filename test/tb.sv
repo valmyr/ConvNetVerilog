@@ -26,8 +26,8 @@ logic signed  [WIDTH_BIT-1:0]bias [FILTER_N1D-1:0];
 
 
 logic signed  [WIDTH_BIT-1:0] i, j, next,current;
-logic  signed [WIDTH_BIT-1:0] Kernel00 [SIZEKer-1:0][SIZEKer-1:0];
-logic  signed [WIDTH_BIT-1:0] Kernel01 [SIZEKer-1:0][SIZEKer-1:0];
+logic signed [WIDTH_BIT-1:0] Kernel00 [SIZEKer-1:0][SIZEKer-1:0];
+logic signed [WIDTH_BIT-1:0] Kernel01 [SIZEKer-1:0][SIZEKer-1:0];
 logic signed  [WIDTH_BIT-1:0] convIxKernelOut0     [SIZE-SIZEKer:0][SIZE-SIZEKer:0]     ;
 logic signed  [WIDTH_BIT-1:0] convIxKernelOut1     [SIZE-SIZEKer:0][SIZE-SIZEKer:0]     ;
 logic signed  [WIDTH_BIT-1:0] maxPoolingOut0       [SIZEOUTCONV-1:0][SIZEOUTCONV-1:0]   ;
@@ -115,13 +115,9 @@ assign bias2_2 = bias2[2];
 assign bias3_2 = bias2[3];
 
 
-logic signed [WIDTH_BIT-1:0] flatten [100-1:0];
-logic signed [WIDTH_BIT-1:0] flatten0 [25-1:0];
-logic signed [WIDTH_BIT-1:0] flatten1 [25-1:0];
-logic signed [WIDTH_BIT-1:0] flatten2 [25-1:0];
-logic signed [WIDTH_BIT-1:0] flatten3 [25-1:0];
-
+logic signed [WIDTH_BIT-1:0] flatten [SIZEOUTCONV2*SIZEOUTCONV2*4-1:0];
 logic signed [WIDTH_BIT-1:0] denseout [10-1:0];
+
 conv2D #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
             .clock                           (clock                          )                               ,
             .nreset                          (nreset3                        )                               ,
@@ -202,202 +198,102 @@ maxpooling #(.SIZE(SIZE2-SIZEKer2),.STEP_MAX_POOLING(STEP_MAX_POOLING2),.SIZEOUT
 );
 
 
-// generate
-//     genvar jj;
-//     for(jj = 0; jj < FILTER_N2D; jj++)begin:INST_CONVS2D
-//         conv2 #(.SIZE(SIZE2),.SIZEKer(SIZEKer2),.WIDTH_BIT(WIDTH_BIT)) conv00 (
-//             .clock                  (clock                          )                               ,
-//             .nreset                 (nreset1                        )                               ,
-//             .inpMatrixI             (maxPoolingOut0[0]                    )                               ,
-//             .Kernel                 (Kernel_1_0[jj]                     )                               ,
-//             .done                   (done00[jj]                       )                               ,
-//             .convIxKernelOut        (convIxKernelOut_1_0[jj]            )
-//         );
-//     end
+flatten_mod #(.WIDTH_BIT(WIDTH_BIT),.SIZEOUTCONV2(SIZEOUTCONV2),.SIZEFLATTEN(4))flattenInst(
+            .maxPoolingOutF1(maxPoolingOutF1)                            ,
+            .maxPoolingOutF2(maxPoolingOutF2)                            ,
+            .maxPoolingOutF3(maxPoolingOutF3)                            ,
+            .maxPoolingOutF4(maxPoolingOutF4)                            ,
+            .flattenOut     (flatten        )
+);
 
-//         for(jj = 0; jj < FILTER_N2D; jj++)begin:INST_MAXPOOLING2D
-//         maxpooling #(.SIZE(SIZE2-SIZEKer2),.STEP_MAX_POOLING(STEP_MAX_POOLING2),.SIZEOUTCONV(SIZEOUTCONV2),.SIZEPOOLING(SIZEPOOLING2),.WIDTH_BIT(WIDTH_BIT)) maxPooling0 (
-//             .clock                              (clock                  )                               ,
-//             .nreset                             (nreset1                )                               ,
-//             .convIxKernelOut                    (convIxKernelOut_1_0[jj]     )                               ,
-//             .done                               (done00m[jj]              )                               ,
-//             .maxPoolingOut                      (maxPoolingOut_1_0[jj]      )
-//         );
-//     end
-// endgenerate
-// assign Kernel0[0] = Kernel00;
-// assign Kernel0[1] = Kernel01;
-// assign convIxKernelOut_0_un1 = convIxKernelOut_1_0[0];
-// assign convIxKernelOut_1_un1 = convIxKernelOut_1_0[1];
-// assign Kernel_1_0[0]  = Kernels2d_00;
-// assign Kernel_1_0[1]  = Kernels2d_01;
-// assign Kernel_1_0[2]  = Kernels2d_02;
-// assign Kernel_1_0[3]  = Kernels2d_03;
-// assign Kernel_1_0[4]  = Kernels2d_04;
-// assign Kernel_1_0[5]  = Kernels2d_05;
-// assign Kernel_1_0[6]  = Kernels2d_06;
-// assign Kernel_1_0[7]  = Kernels2d_07;
-// assign Kernel_1_0[8]  = Kernels2d_08;
 assign bias0 = bias[0];
 assign bias1 = bias[1];
 initial begin
-    $readmemh("simulation/I.txt",inpMatrixI);
-    $readmemh("simulation/bias0.txt",bias);
-    $readmemh("simulation/bias2.txt",bias2);
-    $readmemh("simulation/bias5.txt",biasdense);
-    // $readmemh("simulation/bias1.txt",bias1);
-    $readmemh("simulation/Kernel00.txt",Kernel00);
-    $readmemh("simulation/Kernel01.txt",Kernel01);
+        $readmemh("simulation/I.txt",inpMatrixI);
+        $readmemh("simulation/bias0.txt",bias);
+        $readmemh("simulation/bias2.txt",bias2);
+        $readmemh("simulation/bias5.txt",biasdense);
+        $readmemh("simulation/Kernel00.txt",Kernel00);
+        $readmemh("simulation/Kernel01.txt",Kernel01);
+        $readmemh("simulation/danse.txt00.txt",dense);
+        $readmemh("simulation/kernels2d_00.txt",Kernels2d_01);
+        $readmemh("simulation/kernels2d_01.txt",Kernels2d_02);
+        $readmemh("simulation/kernels2d_02.txt",Kernels2d_03);
+        $readmemh("simulation/kernels2d_03.txt",Kernels2d_04);
+        $readmemh("simulation/kernels2d_10.txt",Kernels2d_11);
+        $readmemh("simulation/kernels2d_11.txt",Kernels2d_12);
+        $readmemh("simulation/kernels2d_12.txt",Kernels2d_13);
+        $readmemh("simulation/kernels2d_13.txt",Kernels2d_14);
 
 
-    $readmemh("simulation/danse.txt00.txt",dense);
+        clock =0;
+        nreset1 = 0;
+        nreset2 = 0;
+        nreset3 = 0;
+        nreset4 = 0;
+        #1 nreset1 = 1;
+        timestart = $realtime();
+        do begin 
+            #1 clock = ~clock;
+        end while(!done0);
+        clock =0;
+        nreset1 = 0;
+        nreset2 = 1;
+        nreset3 = 0;
+        nreset4 = 0;
+        do begin 
+            #1 clock = ~clock;
+        end while(!done0m);
+        nreset1 = 0;
+        nreset2 = 0;
+        nreset3 = 1;
+        nreset4 = 0;
+        // convIxKernelOut1 
 
-    $readmemh("simulation/kernels2d_00.txt",Kernels2d_01);
-    $readmemh("simulation/kernels2d_01.txt",Kernels2d_02);
-    $readmemh("simulation/kernels2d_02.txt",Kernels2d_03);
-    $readmemh("simulation/kernels2d_03.txt",Kernels2d_04);
+        $writememh("simulation/convIxKernelOut0.txt",convIxKernelOut0);
+        $writememh("simulation/convIxKernelOut1.txt",convIxKernelOut1);
+        $writememh("simulation/maxpooling0.txt",maxPoolingOut0);
+        $writememh("simulation/maxpooling1.txt",maxPoolingOut1);
+
+        do begin 
+            #1 clock = ~clock;
+        end while(!done10);
+        $writememh("simulation/convIxKernelOut_F01.txt",convIxKernelOut_F01);
+        $writememh("simulation/convIxKernelOut_F02.txt",convIxKernelOut_F02);
+        $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
+        $writememh("simulation/convIxKernelOut_F04.txt",convIxKernelOut_F04);
+
+        nreset1 = 0;
+        nreset2 = 0;
+        nreset3 = 0;
+        nreset4 = 1;
+        do begin 
+            #1 clock = ~clock;
+        end while(!done10m);
+
+        $writememh("simulation/maxpoolingF1.txt",maxPoolingOutF1);
+        $writememh("simulation/maxpoolingF2.txt",maxPoolingOutF2);
+        $writememh("simulation/maxpoolingF3.txt",maxPoolingOutF3);
+        $writememh("simulation/maxpoolingF4.txt",maxPoolingOutF4);
+        $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
+        $display("Matriz Maxpooling0>> \n");
 
 
-    $readmemh("simulation/kernels2d_10.txt",Kernels2d_11);
-    $readmemh("simulation/kernels2d_11.txt",Kernels2d_12);
-    $readmemh("simulation/kernels2d_12.txt",Kernels2d_13);
-    $readmemh("simulation/kernels2d_13.txt",Kernels2d_14);
-
-    
-    // $display("Matriz de Entrada>> \n");
-    // for(integer i = 0; i < SIZE; i++)begin
-    //     for(integer j = 0; j < SIZE; j++)begin
-    //         $write(inpMatrixI[i][j]);
-    //     end
-    //     $display("\n");
-    // end
-    
-    // $display("\n");
-    // $display("\n");
-    clock =0;
-    nreset1 = 0;
-    nreset2 = 0;
-    nreset3 = 0;
-    nreset4 = 0;
-    #1 nreset1 = 1;
-    timestart = $realtime();
-    do begin 
-        #1 clock = ~clock;
-    end while(!done0);
-    clock =0;
-    nreset1 = 0;
-    nreset2 = 1;
-    nreset3 = 0;
-    nreset4 = 0;
-    do begin 
-        #1 clock = ~clock;
-    end while(!done0m);
-    nreset1 = 0;
-    nreset2 = 0;
-    nreset3 = 1;
-    nreset4 = 0;
-// convIxKernelOut1 
-    
-    $writememh("simulation/convIxKernelOut0.txt",convIxKernelOut0);
-    $writememh("simulation/convIxKernelOut1.txt",convIxKernelOut1);
-    $writememh("simulation/maxpooling0.txt",maxPoolingOut0);
-    $writememh("simulation/maxpooling1.txt",maxPoolingOut1);
-
-    do begin 
-        #1 clock = ~clock;
-    end while(!done10);
-    $writememh("simulation/convIxKernelOut_F01.txt",convIxKernelOut_F01);
-    $writememh("simulation/convIxKernelOut_F02.txt",convIxKernelOut_F02);
-    $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
-    $writememh("simulation/convIxKernelOut_F04.txt",convIxKernelOut_F04);
-
-    nreset1 = 0;
-    nreset2 = 0;
-    nreset3 = 0;
-    nreset4 = 1;
-    do begin 
-        #1 clock = ~clock;
-    end while(!done10m);
-    
-    $writememh("simulation/maxpoolingF1.txt",maxPoolingOutF1);
-    $writememh("simulation/maxpoolingF2.txt",maxPoolingOutF2);
-    $writememh("simulation/maxpoolingF3.txt",maxPoolingOutF3);
-    $writememh("simulation/maxpoolingF4.txt",maxPoolingOutF4);
-    $writememh("simulation/convIxKernelOut_F03.txt",convIxKernelOut_F03);
-    $display("Matriz Maxpooling0>> \n");
-    mmm =0;
-    for(integer i = 0; i < SIZEOUTCONV2; i++)begin
-        for(integer j = 0; j < SIZEOUTCONV2 ; j++)begin
-
-            flatten0[mmm]=maxPoolingOutF1[i][j];
-            flatten1[mmm]=maxPoolingOutF2[i][j];
-            flatten2[mmm]=maxPoolingOutF3[i][j];
-            flatten3[mmm]=maxPoolingOutF4[i][j];
-            mmm+=1;
-        end
+        $writememh("simulation/flatten.txt",flatten);
         $display("\n");
+        $display("[");
+
+        for(integer i = 0; i < 10; i++)begin
+            sum = 0;
+              for(integer k = 0;k < 100; k++)begin
+                sum+=flatten[k]*dense[k][i]+biasdense[i];
+              end
+           denseout[i] = sum ;
+           $display(i,sum);
+
+        end
+        $display("]");
+        $display("\n");
+        $writememh("simulation/dense.txt",denseout);
     end
-    $display(mmm);
-    
-    mmm = 0;
-    for(integer i =0; i < 25; i++)begin
-
-        flatten[mmm+0] = flatten0[i];
-        flatten[mmm+1] = flatten1[i];
-        flatten[mmm+2] = flatten2[i];
-        flatten[mmm+3] = flatten3[i];
-        mmm+=4;
-    end
-    for(integer k = 0;k < 100; k++)begin
-        $display(k,flatten[k]);
-    end
-    $writememh("simulation/flatten.txt",flatten);
-    $display("\n");
-    $display("[");
-
-    for(integer i = 0; i < 10; i++)begin
-        sum = 0;
-          for(integer k = 0;k < 100; k++)begin
-            sum+=flatten[k]*dense[k][i]+biasdense[i];
-          end
-       denseout[i] = sum ;
-       $display(i,sum);
-
-    end
-    $display("]");
-    $display("\n");
-
-
-
-    $writememh("simulation/dense.txt",denseout);
-    //         $display("Matriz de Entrada>> \n");
-    // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
-    //     for(integer j = 0; j <SIZEINPUT_POOLING2; j++)begin
-    //         $write("    ",maxPoolingOut0[i][j]);
-    //     end
-    //     $display("\n");
-    // end
-    //     for(integer i = 0; i < SIZEKer2; i++)begin
-    //     for(integer j = 0; j < SIZEKer2; j++)begin
-    //         $write(Kernels2d_01[i][j]);
-    //     end
-    //     $display("\n");
-    // end
-    
-    //    for(integer i = 0; i < SIZEKer2; i++)begin
-    //     for(integer j = 0; j < SIZEKer2; j++)begin
-    //         $write(Kernels2d_11[i][j]);
-    //     end
-    //     $display("\n");
-    // end
-
-
-    //         $display("Matriz de Entrada>> \n");
-    // for(integer i = 0; i <SIZEINPUT_POOLING2; i++)begin
-    //     for(integer j = 0; j <SIZEINPUT_POOLING2; j++)begin
-    //         $write("    ",convIxKernelOut_F01[i][j]);
-    //     end
-    //     $display("\n");
-    // end
-end
 endmodule

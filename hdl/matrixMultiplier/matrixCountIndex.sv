@@ -3,6 +3,7 @@ module matrixCountIndex#(parameter AROWS = 3,ACOLUMNS = 3,BROWS = 3,BCOLUMNS = 3
     input logic nreset      ,
     output logic [WIDTH_BIT-1:0] i,
     input logic ena,
+    input logic standy,
     output logic [WIDTH_BIT-1:0] j,
     output logic [WIDTH_BIT-1:0] k
 );
@@ -34,21 +35,21 @@ module matrixCountIndex#(parameter AROWS = 3,ACOLUMNS = 3,BROWS = 3,BCOLUMNS = 3
 
     always_comb begin
         if(flag_current)begin
-            k_next = k_current;
-            j_next = j_current;
-            i_next = i_current;
+            k_next = !standy ? k_current: k_current;
+            j_next = !standy ? j_current: j_current;
+            i_next = !standy ? i_current: i_current;
             flag_next = 0;
         end
         else if(k_current < ACOLUMNS-1) begin 
-            k_next = k_current+1;
-            j_next = j_current;
-            i_next = i_current;
+            k_next = !standy ? k_current+1  :k_current;
+            j_next = !standy ? j_current    :j_current;
+            i_next = !standy ? i_current    :i_current;
             flag_next = 0;
         end
         else if(j_current < BCOLUMNS-1)begin
-            k_next = 0;
-            j_next = j_current+1;
-            i_next = i_current;
+            k_next = 0 ;
+            j_next = !standy ? j_current+1:j_current;
+            i_next = !standy ? i_current:i_current;;
             flag_next = 0;
         end else if(i_current < AROWS-1) begin
             k_next = j_current == k_current ? 0 : k_current;
