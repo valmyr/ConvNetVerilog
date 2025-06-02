@@ -2,8 +2,8 @@
 
 O Reconhecimento  Dígitos Manuscritos é o processo  digitalização  imagens  dígitos manuscritos por humanos. É uma tarefa
 difícil para a máquina, pois os dígitos manuscritos não são perfeitos e podem ser produzidos com uma grande variabilidade. Neste projeto, desenvolvemos
-um molode Rede Neural Convolucional (CNN) utilizando o SystemVerilog para o Reconhecimento  Dígitos Manuscritos. Uma rede neural convolucional
-(CNN ou ConvNet) é um algoritmo  Aprendizado Profundo que pode receber uma imagem  entrada, atribuir pesos e vieses aprendíveis
+um modelo de Rede Neural Convolucional (CNN) utilizando o SystemVerilog para o Reconhecimento  Dígitos Manuscritos. Uma rede neural convolucional
+(CNN ou ConvNet) é um algoritmo  Aprendizado Profundo que pode receber uma imagem de entrada, atribuir pesos e vieses aprendíveis
 a vários objetos na imagem e ser capaz  distingui-los.
 
 ## Layers da Rede Convolucional 
@@ -55,19 +55,19 @@ a vários objetos na imagem e ser capaz  distingui-los.
 </p>
 
 
-## layer 6 - NSE
+## layer 6 - DENSE
 <p align="center">
 <img title="DENSE" alt="Alt text" src="images/dense_layer6.png"  width="100%" height="100%">
 </p>
 
-## Exemplo  convolução matricial
+## Exemplo  Convolução matricial
 <p align="center">
 <img title="Exemplo de convolução matricial" alt="Alt text" src="images/conv.png">
 </p>
 
 Referências
 
-[Topologia dda rede] (https://www.youtube.com/watch?v=jDe5BAsT2-Y&ab_channel=Erai)
+[Topologia dda rede](https://www.youtube.com/watch?v=jDe5BAsT2-Y&ab_channel=Erai)
 [Convolutional Neural Network | ep Learning](https://velopersbreach.com/convolution-neural-network-ep-learning/).
 
 [CNN EXPAINER](https://poloclub.github.io/cnn-explainer/#article-convolution).
