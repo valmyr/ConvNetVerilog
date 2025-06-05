@@ -5,3 +5,4 @@ python/
 *.history
 *.log
 *.key
+.venv
