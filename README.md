@@ -9,7 +9,10 @@ a vários objetos na imagem e ser capaz  distingui-los.
 ## Layers da Rede Convolucional 
 <p align="center">
 <img title="Rede Convolucional Diagrama" alt="Alt text" src="images/diagrama_rede_convolucional.png">
+
 </p>
+
+
 
 ## Diagrama de blocos do SystemVerilog da Rede Convolucional 
 <p align="center">
