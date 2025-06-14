@@ -1360,3 +1360,260 @@ Matriz Maxpooling0>>
 xmsim: *W,RNQUIE: Simulation is complete.
 xcelium> exit
 TOOL:	xrun(64)	23.09-s003: Exiting on May 10, 2025 at 21:39:06 -03  (total: 00:00:01)
+TOOL:	xrun	23.09-s003: Started on Jun 13, 2025 at 23:51:42 -03
+TOOL:	xrun(64)	23.09-s003: Started on Jun 13, 2025 at 23:51:43 -03
+xrun(64): 23.09-s003: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+file: test/tb.sv
+	module worklib.tb:sv
+		errors: 0, warnings: 0
+file: hdl/conv.sv
+	module worklib.mulp:sv
+		errors: 0, warnings: 0
+	module worklib.sum:sv
+		errors: 0, warnings: 0
+	module worklib.conv:sv
+		errors: 0, warnings: 0
+file: hdl/conv1D.sv
+	module worklib.conv1D:sv
+		errors: 0, warnings: 0
+file: hdl/conv1D2.sv
+	module worklib.conv2D:sv
+		errors: 0, warnings: 0
+file: hdl/flatten.sv
+	module worklib.flatten_mod:sv
+		errors: 0, warnings: 0
+file: hdl/indexMatrix.sv
+	module worklib.indexMatrix:sv
+		errors: 0, warnings: 0
+file: hdl/max2num.sv
+	module worklib.max2num:sv
+		errors: 0, warnings: 0
+file: hdl/maxPooling.sv
+	module worklib.maxpooling:sv
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		tb
+	Building instance overlay tables: 
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                       |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|71): Bit-select index truncation  of the instance (tb.maxPooling13).
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                                             |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|93): Bit-select index truncation  of the instance (tb.maxPooling13).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                  |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|34): Bit-select index truncation  of the instance (tb.maxPooling13).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                     |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|37): Bit-select index truncation  of the instance (tb.maxPooling13).
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                       |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|71): Bit-select index truncation  of the instance (tb.maxPooling10).
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                                             |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|93): Bit-select index truncation  of the instance (tb.maxPooling10).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                  |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|34): Bit-select index truncation  of the instance (tb.maxPooling10).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                     |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|37): Bit-select index truncation  of the instance (tb.maxPooling10).
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                       |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|71): Bit-select index truncation  of the instance (tb.maxPooling1).
+                            bufferMaxPooling[k][l] <= convIxKernelOut[k+STEP_MAX_POOLING*i][l+STEP_MAX_POOLING*j];
+                                                                                             |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,54|93): Bit-select index truncation  of the instance (tb.maxPooling1).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                  |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|34): Bit-select index truncation  of the instance (tb.maxPooling1).
+                    maxPoolingOut[i][j] <= tempMax; 
+                                     |
+xmelab: *W,BIGWBS (./hdl/maxPooling.sv,63|37): Bit-select index truncation  of the instance (tb.maxPooling1).
+.
+        $readmemh("simulation/I.txt",inpMatrixI);
+                                              |
+xmelab: *W,MEMODR (./test/tb.sv,212|46): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/bias0.txt",bias);
+                                            |
+xmelab: *W,MEMODR (./test/tb.sv,213|44): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/bias2.txt",bias2);
+                                             |
+xmelab: *W,MEMODR (./test/tb.sv,214|45): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/bias5.txt",biasdense);
+                                                 |
+xmelab: *W,MEMODR (./test/tb.sv,215|49): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/Kernel00.txt",Kernel00);
+                                                   |
+xmelab: *W,MEMODR (./test/tb.sv,216|51): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/Kernel01.txt",Kernel01);
+                                                   |
+xmelab: *W,MEMODR (./test/tb.sv,217|51): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/danse.txt00.txt",dense);
+                                                   |
+xmelab: *W,MEMODR (./test/tb.sv,218|51): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_00.txt",Kernels2d_01);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,219|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_01.txt",Kernels2d_02);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,220|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_02.txt",Kernels2d_03);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,221|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_03.txt",Kernels2d_04);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,222|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_10.txt",Kernels2d_11);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,223|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_11.txt",Kernels2d_12);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,224|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_12.txt",Kernels2d_13);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,225|59): $readmem default memory order incompatible with IEEE1364.
+        $readmemh("simulation/kernels2d_13.txt",Kernels2d_14);
+                                                           |
+xmelab: *W,MEMODR (./test/tb.sv,226|59): $readmem default memory order incompatible with IEEE1364.
+                        inpMatrixIdinKer[k][l] <= inpMatrixI[k+i][l+j];
+                                                              |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,47|62): Bit-select index truncation  of the instance (tb.conv0).
+                        inpMatrixIdinKer[k][l] <= inpMatrixI[k+i][l+j];
+                                                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,47|67): Bit-select index truncation  of the instance (tb.conv0).
+                convIxKernelOut[i][j] <= convIxKernel +bias>= 0  ? convIxKernel+bias: 0; //Relu+
+                                |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,56|32): Bit-select index truncation  of the instance (tb.conv0).
+                convIxKernelOut[i][j] <= convIxKernel +bias>= 0  ? convIxKernel+bias: 0; //Relu+
+                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,56|35): Bit-select index truncation  of the instance (tb.conv0).
+...
+                        inpMatrixIdinKer[k][l] <= inpMatrixI[k+i][l+j];
+                                                              |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,47|62): Bit-select index truncation  of the instance (tb.conv2).
+                        inpMatrixIdinKer[k][l] <= inpMatrixI[k+i][l+j];
+                                                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,47|67): Bit-select index truncation  of the instance (tb.conv2).
+                convIxKernelOut[i][j] <= convIxKernel +bias>= 0  ? convIxKernel+bias: 0; //Relu+
+                                |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,56|32): Bit-select index truncation  of the instance (tb.conv2).
+                convIxKernelOut[i][j] <= convIxKernel +bias>= 0  ? convIxKernel+bias: 0; //Relu+
+                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D.sv,56|35): Bit-select index truncation  of the instance (tb.conv2).
+....
+                        inpMatrixIdinKer1[k][l] <= inpMatrixI1[k+i][l+j];
+                                                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,62|64): Bit-select index truncation  of the instance (tb.conv00).
+                        inpMatrixIdinKer1[k][l] <= inpMatrixI1[k+i][l+j];
+                                                                     |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,62|69): Bit-select index truncation  of the instance (tb.conv00).
+                        inpMatrixIdinKer2[k][l] <= inpMatrixI2[k+i][l+j];
+                                                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,63|64): Bit-select index truncation  of the instance (tb.conv00).
+                        inpMatrixIdinKer2[k][l] <= inpMatrixI2[k+i][l+j];
+                                                                     |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,63|69): Bit-select index truncation  of the instance (tb.conv00).
+                convIxKernelOut[i][j] <= convIxKernel1+convIxKernel2+bias >= 0  ? convIxKernel1+convIxKernel2+bias: 0; //Relu+
+                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,73|32): Bit-select index truncation  of the instance (tb.conv00).
+                convIxKernelOut[i][j] <= convIxKernel1+convIxKernel2+bias >= 0  ? convIxKernel1+convIxKernel2+bias: 0; //Relu+
+                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,73|35): Bit-select index truncation  of the instance (tb.conv00).
+...
+                        inpMatrixIdinKer1[k][l] <= inpMatrixI1[k+i][l+j];
+                                                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,62|64): Bit-select index truncation  of the instance (tb.conv01).
+                        inpMatrixIdinKer1[k][l] <= inpMatrixI1[k+i][l+j];
+                                                                     |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,62|69): Bit-select index truncation  of the instance (tb.conv01).
+                        inpMatrixIdinKer2[k][l] <= inpMatrixI2[k+i][l+j];
+                                                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,63|64): Bit-select index truncation  of the instance (tb.conv01).
+                        inpMatrixIdinKer2[k][l] <= inpMatrixI2[k+i][l+j];
+                                                                     |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,63|69): Bit-select index truncation  of the instance (tb.conv01).
+                convIxKernelOut[i][j] <= convIxKernel1+convIxKernel2+bias >= 0  ? convIxKernel1+convIxKernel2+bias: 0; //Relu+
+                                |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,73|32): Bit-select index truncation  of the instance (tb.conv01).
+                convIxKernelOut[i][j] <= convIxKernel1+convIxKernel2+bias >= 0  ? convIxKernel1+convIxKernel2+bias: 0; //Relu+
+                                   |
+xmelab: *W,BIGWBS (./hdl/conv1D2.sv,73|35): Bit-select index truncation  of the instance (tb.conv01).
+......... Done
+	Generating native compiled code:
+		worklib.flatten_mod:sv <0x2625066c>
+			streams:   1, words:  4290
+		worklib.indexMatrix:sv <0x0a6759a2>
+			streams:   5, words:  4352
+		worklib.conv2D:sv <0x11af7dab>
+			streams:  15, words: 24086
+		worklib.indexMatrix:sv <0x27dd1c57>
+			streams:   5, words:  4352
+		worklib.conv2D:sv <0x3be29f50>
+			streams:  16, words: 24707
+		worklib.max2num:sv <0x42568599>
+			streams:   1, words:   892
+		worklib.indexMatrix:sv <0x35939e35>
+			streams:   5, words:  4352
+		worklib.conv1D:sv <0x32a585a8>
+			streams:  12, words: 19366
+		worklib.indexMatrix:sv <0x58349379>
+			streams:   5, words:  4352
+		worklib.sum:sv <0x3e09653f>
+			streams:   1, words:   475
+		worklib.mulp:sv <0x110542cd>
+			streams:   1, words:   373
+		worklib.conv1D:sv <0x7584be0c>
+			streams:  13, words: 19984
+		worklib.tb:sv <0x4a5eac33>
+			streams:  53, words: 40377
+		worklib.conv:sv <0x0255e3dc>
+			streams:  12, words:  6727
+		worklib.maxpooling:sv <0x0e29392a>
+			streams:  21, words: 14987
+		worklib.conv:sv <0x2257a312>
+			streams:  12, words:  6718
+		worklib.maxpooling:sv <0x685474a8>
+			streams:  21, words: 14987
+		worklib.maxpooling:sv <0x0d8e1a62>
+			streams:  20, words: 14369
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                Instances  Unique
+		Modules:              288      10
+		Registers:            619     132
+		Scalar wires:          64       -
+		Vectored wires:      1451       -
+		Always blocks:         55       9
+		Initial blocks:         1       1
+		Cont. assignments:    306      13
+		Pseudo assignments:   880       -
+		Process Clocks:        24       4
+	Writing initial simulation snapshot: worklib.tb:sv
+Loading snapshot worklib.tb:sv .................... Done
+xcelium> source /Tools/cadence/XCELIUM2309/tools/xcelium/files/xmsimrc
+xcelium> run
+Matriz Maxpooling0>> 
+
+
+
+[
+          0          -80551606200703901603216240022
+          1          -88542041287307480481459675407
+          2          -52663299806073192827301795738
+          3          -49631455558367677129842584843
+          4          -80961088556731864330429892627
+          5          -57701574049222279190738276848
+          6          -73732094925375911346829091644
+          7          -70981001268035099626174952776
+          8          -60771901377905533699104342331
+          9          -68945614865016704937197053637
+]
+
+
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun(64)	23.09-s003: Exiting on Jun 13, 2025 at 23:51:43 -03  (total: 00:00:00)
